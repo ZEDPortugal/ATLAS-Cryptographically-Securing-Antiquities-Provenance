@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { setDraftImages, getDraftImages } from '@/lib/draftCache'
+import ProtectedRoute from '../components/ProtectedRoute'
 
 const IMAGE_VIEWS = [
   { key: 'front', label: 'Front', helper: 'Primary reference image' },
@@ -213,12 +214,13 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className='min-h-screen bg-neutral-950 py-12 px-4 text-white'>
-      <div className="mx-auto w-full max-w-4xl rounded-3xl bg-neutral-900/70 p-8 shadow-xl">
-        <div className="flex mb-8">
-          <h1 className="text-3xl px-3 font-semibold tracking-wide text-emerald-400">CREATE</h1>
-          <h1 className="text-3xl font-semibold tracking-wide text-white">ANTIQUE</h1>
-        </div>
+    <ProtectedRoute>
+      <div className='min-h-screen bg-neutral-950 py-12 px-4 text-white'>
+        <div className="mx-auto w-full max-w-4xl rounded-3xl bg-neutral-900/70 p-8 shadow-xl">
+          <div className="flex mb-8">
+            <h1 className="text-3xl px-3 font-semibold tracking-wide text-emerald-400">CREATE</h1>
+            <h1 className="text-3xl font-semibold tracking-wide text-white">ANTIQUE</h1>
+          </div>
 
         <form onSubmit={handleSubmit} className="space-y-12">
           <div className="grid gap-10 md:grid-cols-[minmax(0,360px)_minmax(0,1fr)]">
@@ -282,5 +284,6 @@ export default function RegisterPage() {
         ) : null}
       </div>
     </div>
+    </ProtectedRoute>
   );
 }

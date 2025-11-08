@@ -48,22 +48,7 @@ export default function ItemAuthenticator() {
   }
 
   return (
-    <div style={{ marginTop: 24 }}>
-      <h2>Authenticator (compute server-side proof)</h2>
-      <form onSubmit={handleVerify}>
-        <div>
-          <label>Username</label>
-          <input value={username} onChange={(e) => setUsername(e.target.value)} required />
-        </div>
-        <div>
-          <label>Secret (for verification)</label>
-          <input type="password" value={secretInput} onChange={(e) => setSecretInput(e.target.value)} required />
-        </div>
-        <div>
-          <button type="submit">Compute server proof</button>
-        </div>
-      </form>
-      <div style={{ marginTop: 12 }}>{message}</div>
-    </div>
+    <>
+    </>
   )
 }

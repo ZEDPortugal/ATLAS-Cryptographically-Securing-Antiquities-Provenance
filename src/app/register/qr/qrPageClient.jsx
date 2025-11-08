@@ -1,13 +1,13 @@
 "use client"
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import QRCode from 'qrcode'
 
 export default function RegisterQrPageClient() {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const hash = searchParams.get('hash') || ''
+  const [hash, setHash] = useState(null)
 
   const [artifactName, setArtifactName] = useState('')
   const [qrSrc, setQrSrc] = useState('')
@@ -33,7 +33,27 @@ export default function RegisterQrPageClient() {
     document.body.removeChild(anchor)
   }
 
+  const hasInitialisedRef = useRef(false)
+
   useEffect(() => {
+    if (hasInitialisedRef.current) {
+      return
+    }
+
+    hasInitialisedRef.current = true
+    const initialHash = searchParams.get('hash') || ''
+    setHash(initialHash)
+
+    if (initialHash) {
+      router.replace('/register/qr', { scroll: false })
+    }
+  }, [router, searchParams])
+
+  useEffect(() => {
+    if (hash === null) {
+      return
+    }
+
     if (!hash) {
       setError('No artifact hash provided.')
       setLoading(false)
@@ -42,6 +62,7 @@ export default function RegisterQrPageClient() {
 
     let cancelled = false
     setLoading(true)
+    setError('')
 
     const fetchArtifact = async (attempt = 1) => {
       const res = await fetch(`/api/artifacts/${encodeURIComponent(hash)}`, { cache: 'no-store' })

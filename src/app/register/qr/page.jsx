@@ -1,5 +1,6 @@
 import { Suspense } from 'react'
 import RegisterQrPageClient from './qrPageClient'
+import ProtectedRoute from '../../components/ProtectedRoute'
 
 function RegisterQrFallback() {
   return (
@@ -11,8 +12,10 @@ function RegisterQrFallback() {
 
 export default function RegisterQrPage() {
   return (
-    <Suspense fallback={<RegisterQrFallback />}>
-      <RegisterQrPageClient />
-    </Suspense>
+    <ProtectedRoute>
+      <Suspense fallback={<RegisterQrFallback />}>
+        <RegisterQrPageClient />
+      </Suspense>
+    </ProtectedRoute>
   )
 }

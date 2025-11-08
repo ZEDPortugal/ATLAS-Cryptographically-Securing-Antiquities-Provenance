@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { getDraftImages, clearDraftImages } from '@/lib/draftCache'
+import ProtectedRoute from '../../components/ProtectedRoute'
 
 const IMAGE_VIEWS = [
   { key: 'front', label: 'Front' },
@@ -187,6 +188,7 @@ export default function RegisterPreviewPage() {
   }
 
   return (
+    <ProtectedRoute>
     <div className="min-h-screen bg-neutral-950 py-12 px-4 text-white">
       <div className="mx-auto w-full max-w-4xl rounded-3xl bg-neutral-900/70 p-8 shadow-xl">
         <div className="mb-8 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
@@ -256,5 +258,6 @@ export default function RegisterPreviewPage() {
         </div>
       </div>
     </div>
+    </ProtectedRoute>
   )
 }

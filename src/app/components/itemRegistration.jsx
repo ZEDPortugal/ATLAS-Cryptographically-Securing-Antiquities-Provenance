@@ -52,21 +52,6 @@ export default function ItemRegistration() {
 
   return (
     <div>
-      <h2>Register</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Username</label>
-          <input value={username} onChange={(e) => setUsername(e.target.value)} required />
-        </div>
-        <div>
-          <label>Secret (password / key)</label>
-          <input type="password" value={secretInput} onChange={(e) => setSecretInput(e.target.value)} required />
-        </div>
-        <div>
-          <button type="submit">Register</button>
-        </div>
-      </form>
-      <div style={{ marginTop: 12 }}>{message}</div>
     </div>
   )
 }

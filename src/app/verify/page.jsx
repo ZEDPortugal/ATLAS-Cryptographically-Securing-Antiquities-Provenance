@@ -1,6 +1,7 @@
 "use client"
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import jsQR from 'jsqr'
+import ProtectedRoute from '../components/ProtectedRoute'
 
 const IMAGE_VIEWS = [
   { key: 'front', label: 'Front' },
@@ -223,15 +224,16 @@ export default function VerifyPage() {
   }
 
   return (
+    <ProtectedRoute>
     <div className="min-h-screen bg-neutral-950 py-12 px-4 text-white">
-      <div className="mx-auto  w-full max-w-4xl rounded-3xl bg-neutral-900/70 p-8 shadow-xl">
-      <div className="mb-8 flex">
-        <h1 className="text-3xl font-semibold uppercase tracking-[0.4em]  text-emerald-400">Verify</h1>
-        <h1 className="text-3xl ml-3 font-semibold uppercase tracking-[0.4em] text-neutral-200 ">Antique</h1>
+      <div className="mx-auto  w-full max-w-4xl rounded-3xl bg-neutral-900/70 p-6 sm:p-8 shadow-xl">
+      <div className="mb-8 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+        <h1 className="text-3xl font-semibold uppercase tracking-[0.25em] text-emerald-400 sm:tracking-[0.4em]">Verify</h1>
+        <h1 className="text-3xl font-semibold uppercase tracking-[0.25em] text-neutral-200 sm:tracking-[0.4em]">Antique</h1>
         </div>
         <p className="mt-2 text-sm text-neutral-400">Enter an artifact hash to fetch the stored record and imagery.</p>
 
-        <form onSubmit={handleCheck} className="mt-8 flex flex-col gap-4 md:flex-row">
+        <form onSubmit={handleCheck} className="mt-8 flex flex-col gap-4 md:flex-row md:items-end">
           <div className="flex-1">
             <label className="text-xs uppercase tracking-widest text-neutral-400">Artifact Hash</label>
             <input
@@ -244,14 +246,8 @@ export default function VerifyPage() {
             <div className="mt-3 flex flex-col gap-2 text-xs text-neutral-400">
               <div className="flex flex-col gap-2 rounded-xl border border-neutral-800 bg-neutral-900/60 p-4">
                 <div className="font-semibold uppercase tracking-[0.3em] text-neutral-300">Scan Options</div>
-                <div className="flex flex-col gap-3 md:flex-row md:items-center md:gap-4">
-                  <button
-                    type="button"
-                    onClick={isScanning ? stopCameraScan : startCameraScan}
-                    className={`rounded-lg border px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] transition md:w-auto ${isScanning ? 'border-red-400/60 bg-red-500/10 text-red-200 hover:border-red-300 hover:text-red-100' : 'border-emerald-500/60 bg-emerald-500/10 text-emerald-200 hover:border-emerald-400 hover:text-emerald-100'} ${cameraSupported ? '' : 'opacity-60'}`}
-                  >
-                    {isScanning ? 'Stop Camera Scan' : 'Scan With Camera'}
-                  </button>
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
+                 
                   <div>
                     <input
                       id="verify-qr-upload"
@@ -265,7 +261,7 @@ export default function VerifyPage() {
                       htmlFor="verify-qr-upload"
                       className="inline-block cursor-pointer rounded-lg border border-neutral-700 px-4 py-2 text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-neutral-200 transition hover:border-emerald-400 hover:text-emerald-100"
                     >
-                      Upload QR Image
+                      Upload QR Image / Scan
                     </label>
                   </div>
                 </div>
@@ -282,7 +278,7 @@ export default function VerifyPage() {
           </div>
           <button
             type="submit"
-            className="rounded-xl bg-emerald-500 px-6 py-3 text-xs font-semibold uppercase tracking-[0.3em] text-white transition hover:bg-emerald-400"
+            className="w-full rounded-xl bg-emerald-500 px-6 py-3 text-xs font-semibold uppercase tracking-[0.3em] text-white transition hover:bg-emerald-400 md:w-auto"
           >
             Check
           </button>
@@ -401,5 +397,6 @@ export default function VerifyPage() {
         </div>
       </div>
     </div>
+    </ProtectedRoute>
   )
 }
