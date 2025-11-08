@@ -1,31 +1,18 @@
 import { NextResponse } from "next/server";
 import crypto from "crypto";
-import fs from "fs";
-import path from "path";
 
-// In production, use a database
-const USERS_FILE = path.join(process.cwd(), "data", "users.json");
-
-// Ensure data directory exists
-function ensureDataDir() {
-  const dataDir = path.join(process.cwd(), "data");
-  if (!fs.existsSync(dataDir)) {
-    fs.mkdirSync(dataDir, { recursive: true });
-  }
-  if (!fs.existsSync(USERS_FILE)) {
-    fs.writeFileSync(USERS_FILE, JSON.stringify([]));
-  }
-}
+// Use environment variable to store users temporarily
+// For production, replace this with a proper database (Vercel KV, Postgres, MongoDB, etc.)
+let usersCache = [];
 
 function getUsers() {
-  ensureDataDir();
-  const data = fs.readFileSync(USERS_FILE, "utf8");
-  return JSON.parse(data);
+  // In a serverless environment, this will reset between invocations
+  // This is a temporary solution - use a real database for production
+  return usersCache;
 }
 
 function saveUsers(users) {
-  ensureDataDir();
-  fs.writeFileSync(USERS_FILE, JSON.stringify(users, null, 2));
+  usersCache = users;
 }
 
 export async function POST(request) {

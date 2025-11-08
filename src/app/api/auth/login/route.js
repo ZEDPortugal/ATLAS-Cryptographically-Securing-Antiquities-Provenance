@@ -1,20 +1,10 @@
 import { NextResponse } from "next/server";
-import fs from "fs";
-import path from "path";
 
-const USERS_FILE = path.join(process.cwd(), "data", "users.json");
+// Temporary in-memory storage - replace with database in production
+let usersCache = [];
 
 function getUsers() {
-  try {
-    if (!fs.existsSync(USERS_FILE)) {
-      return [];
-    }
-    const data = fs.readFileSync(USERS_FILE, "utf8");
-    return JSON.parse(data);
-  } catch (error) {
-    console.error("Error reading users file:", error);
-    return [];
-  }
+  return usersCache;
 }
 
 export async function POST(request) {
