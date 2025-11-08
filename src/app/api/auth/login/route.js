@@ -1,11 +1,5 @@
 import { NextResponse } from "next/server";
-
-// Temporary in-memory storage - replace with database in production
-let usersCache = [];
-
-function getUsers() {
-  return usersCache;
-}
+import { findUserByCredentials } from "@/lib/db";
 
 export async function POST(request) {
   try {
@@ -20,12 +14,7 @@ export async function POST(request) {
     }
 
     // Find user by username and hash
-    const users = getUsers();
-    const user = users.find(
-      (u) => 
-        u.username.toLowerCase() === username.toLowerCase() && 
-        u.hash === hash
-    );
+    const user = await findUserByCredentials(username, hash);
 
     if (!user) {
       return NextResponse.json(

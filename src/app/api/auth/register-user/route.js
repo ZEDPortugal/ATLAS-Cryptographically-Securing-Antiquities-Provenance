@@ -1,22 +1,12 @@
 import { NextResponse } from "next/server";
 import crypto from "crypto";
-
-// Use environment variable to store users temporarily
-// For production, replace this with a proper database (Vercel KV, Postgres, MongoDB, etc.)
-let usersCache = [];
-
-function getUsers() {
-  // In a serverless environment, this will reset between invocations
-  // This is a temporary solution - use a real database for production
-  return usersCache;
-}
-
-function saveUsers(users) {
-  usersCache = users;
-}
+import { createUser, findUserByUsername, initializeDatabase } from "@/lib/db";
 
 export async function POST(request) {
   try {
+    // Initialize database (safe to call multiple times)
+    await initializeDatabase();
+    
     const { name, username, position } = await request.json();
 
     // Validate input
@@ -28,10 +18,7 @@ export async function POST(request) {
     }
 
     // Check if username already exists
-    const users = getUsers();
-    const existingUser = users.find(
-      (u) => u.username.toLowerCase() === username.toLowerCase()
-    );
+    const existingUser = await findUserByUsername(username);
 
     if (existingUser) {
       return NextResponse.json(
@@ -47,19 +34,8 @@ export async function POST(request) {
       .digest("hex")
       .substring(0, 32); // Use first 32 characters for a shorter hash
 
-    // Create user object
-    const newUser = {
-      id: crypto.randomUUID(),
-      name,
-      username: username.toLowerCase(),
-      position,
-      hash,
-      createdAt: new Date().toISOString(),
-    };
-
-    // Save user
-    users.push(newUser);
-    saveUsers(users);
+    // Create user
+    const newUser = await createUser(name, username, position, hash);
 
     return NextResponse.json({
       success: true,
@@ -70,22 +46,7 @@ export async function POST(request) {
   } catch (error) {
     console.error("Registration error:", error);
     return NextResponse.json(
-      { error: "An error occurred during registration" },
-      { status: 500 }
-    );
-  }
-}
-
-export async function GET() {
-  try {
-    const users = getUsers();
-    // Return users without hashes for security
-    const safeUsers = users.map(({ hash, ...user }) => user);
-    return NextResponse.json({ users: safeUsers });
-  } catch (error) {
-    console.error("Error fetching users:", error);
-    return NextResponse.json(
-      { error: "An error occurred" },
+      { error: "An error occurred during registration: " + error.message },
       { status: 500 }
     );
   }
