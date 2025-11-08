@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server'
-import { getArtifact } from '../../../../lib/artifactStore'
-import { findByHash } from '../../../../lib/blockchain'
+import { getArtifact, findByHash } from '../../../../lib/db'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0

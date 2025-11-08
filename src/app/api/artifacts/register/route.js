@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server'
 import Artifact from '../../../../lib/artifact'
-import { appendBlock } from '../../../../lib/blockchain'
-import { saveArtifact } from '../../../../lib/artifactStore'
+import { appendBlock, saveArtifact, initializeDatabase } from '../../../../lib/db'
 
 export async function POST(req) {
   const body = await req.json().catch(() => null)
@@ -20,6 +19,9 @@ export async function POST(req) {
   const hash = art.computeHash()
 
   try {
+    // Initialize database (safe to call multiple times)
+    await initializeDatabase()
+    
     const block = await appendBlock({ artifactHash: hash, owner: name })
     await saveArtifact(hash, {
       name: art.name,

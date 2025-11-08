@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server'
-import { findByHash } from '../../../../lib/blockchain'
-import { getArtifact } from '../../../../lib/artifactStore'
+import { findByHash, getArtifact } from '../../../../lib/db'
 
 export async function POST(req) {
   const body = await req.json().catch(() => null)
