@@ -159,6 +159,15 @@ p, label, span, div, a, button, input, textarea, select {
   border-color: var(--foreground) !important;
 }
 
+/* Light mode border adjustments */
+:root.light .border-neutral-700 {
+  border-color: rgba(158, 155, 151, 0.5) !important;
+}
+
+:root.light .border-neutral-800 {
+  border-color: rgba(158, 155, 151, 0.6) !important;
+}
+
 /* Ring colors */
 .ring-neutral-700 {
   --tw-ring-color: var(--card-border) !important;
@@ -187,6 +196,19 @@ p, label, span, div, a, button, input, textarea, select {
 
 .bg-neutral-950\/60 {
   background-color: var(--input-bg) !important;
+}
+
+/* Input backgrounds that adapt to theme */
+input.bg-neutral-800,
+textarea.bg-neutral-800,
+select.bg-neutral-800 {
+  background-color: var(--input-bg) !important;
+}
+
+:root.light input.bg-neutral-800,
+:root.light textarea.bg-neutral-800,
+:root.light select.bg-neutral-800 {
+  background-color: rgba(232, 230, 227, 0.9) !important;
 }
 
 /* Placeholder colors */
@@ -240,22 +262,65 @@ code, pre, .font-mono {
   color: var(--neutral-500) !important;
 }
 
-/* Ensure proper contrast for form inputs in light mode */
+/* Ensure proper contrast for form inputs in both themes */
 :root.light input,
 :root.light textarea,
 :root.light select {
   color: var(--neutral-900) !important;
+  background-color: var(--input-bg) !important;
 }
 
 :root.dark input,
 :root.dark textarea,
 :root.dark select {
-  color: var(--neutral-100) !important;
+  color: var(--foreground) !important;
+  background-color: var(--input-bg) !important;
 }
 
-/* Force white text on all buttons regardless of theme */
-button {
+/* Override any hardcoded text colors on inputs */
+input.text-white,
+textarea.text-white,
+input.text-neutral-100,
+textarea.text-neutral-100 {
+  color: var(--foreground) !important;
+}
+
+:root.light input.text-white,
+:root.light textarea.text-white,
+:root.light input.text-neutral-100,
+:root.light textarea.text-neutral-100 {
+  color: var(--neutral-900) !important;
+}
+
+/* Force white text on buttons with backgrounds */
+button.bg-emerald-500,
+button.bg-emerald-600,
+button[class*="bg-emerald-"],
+button[class*="bg-red-"],
+button[class*="bg-blue-"] {
   color: white !important;
+}
+
+/* Transparent/borderless buttons should adapt to theme */
+button.bg-transparent,
+button:not([class*="bg-"]):not(.bg-emerald-500):not(.bg-emerald-600) {
+  color: var(--foreground) !important;
+}
+
+:root.light button.bg-transparent,
+:root.light button:not([class*="bg-"]):not(.bg-emerald-500):not(.bg-emerald-600) {
+  color: var(--neutral-900) !important;
+}
+
+/* Border-only buttons (no background) should have theme-aware text */
+button.border-neutral-700:not([class*="bg-emerald"]):not([class*="bg-red"]),
+label.border-neutral-700 {
+  color: var(--foreground) !important;
+}
+
+:root.light button.border-neutral-700:not([class*="bg-emerald"]):not([class*="bg-red"]),
+:root.light label.border-neutral-700 {
+  color: var(--neutral-900) !important;
 }
 
 /* Exception for buttons that should follow theme (like text buttons without bg) */

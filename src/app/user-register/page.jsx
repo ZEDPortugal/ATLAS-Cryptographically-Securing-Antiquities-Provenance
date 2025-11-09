@@ -75,7 +75,7 @@ export default function UserRegisterPage() {
                 autoFocus
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="mt-2 block w-full rounded-lg bg-neutral-800 px-4 py-3 text-white placeholder-neutral-500 ring-1 ring-neutral-700 transition focus:outline-none focus:ring-2 focus:ring-emerald-400"
+                className="mt-2 block w-full rounded-lg bg-neutral-800 px-4 py-3 placeholder-neutral-500 ring-1 ring-neutral-700 transition focus:outline-none focus:ring-2 focus:ring-emerald-400"
                 placeholder="Enter your full name"
               />
             </div>
@@ -94,7 +94,7 @@ export default function UserRegisterPage() {
                 required
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                className="mt-2 block w-full rounded-lg bg-neutral-800 px-4 py-3 text-white placeholder-neutral-500 ring-1 ring-neutral-700 transition focus:outline-none focus:ring-2 focus:ring-emerald-400"
+                className="mt-2 block w-full rounded-lg bg-neutral-800 px-4 py-3 placeholder-neutral-500 ring-1 ring-neutral-700 transition focus:outline-none focus:ring-2 focus:ring-emerald-400"
                 placeholder="Choose a username"
               />
             </div>
@@ -113,7 +113,7 @@ export default function UserRegisterPage() {
                 required
                 value={position}
                 onChange={(e) => setPosition(e.target.value)}
-                className="mt-2 block w-full rounded-lg bg-neutral-800 px-4 py-3 text-white placeholder-neutral-500 ring-1 ring-neutral-700 transition focus:outline-none focus:ring-2 focus:ring-emerald-400"
+                className="mt-2 block w-full rounded-lg bg-neutral-800 px-4 py-3 placeholder-neutral-500 ring-1 ring-neutral-700 transition focus:outline-none focus:ring-2 focus:ring-emerald-400"
                 placeholder="e.g., Curator, Administrator"
               />
             </div>
@@ -121,7 +121,7 @@ export default function UserRegisterPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full rounded-lg bg-emerald-500 px-4 py-3 text-sm font-semibold uppercase tracking-wide text-white transition hover:bg-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:ring-offset-2 focus:ring-offset-neutral-900 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full rounded-lg bg-emerald-500 px-4 py-3 text-sm font-semibold uppercase tracking-wide transition hover:bg-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:ring-offset-2 focus:ring-offset-neutral-900 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? "Registering..." : "Register"}
             </button>

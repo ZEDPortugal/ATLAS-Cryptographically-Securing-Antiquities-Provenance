@@ -123,7 +123,7 @@ export default function LoginPage() {
                 autoFocus
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                className="mt-2 block w-full rounded-lg bg-neutral-800 px-4 py-3 text-white placeholder-neutral-500 ring-1 ring-neutral-700 transition focus:outline-none focus:ring-2 focus:ring-emerald-400"
+                className="mt-2 block w-full rounded-lg bg-neutral-800 px-4 py-3 placeholder-neutral-500 ring-1 ring-neutral-700 transition focus:outline-none focus:ring-2 focus:ring-emerald-400"
                 placeholder="Enter username"
               />
             </div>
@@ -143,7 +143,7 @@ export default function LoginPage() {
                 required
                 value={hash}
                 onChange={(e) => setHash(e.target.value)}
-                className="mt-2 block w-full rounded-lg bg-neutral-800 px-4 py-3 font-mono text-sm text-white placeholder-neutral-500 ring-1 ring-neutral-700 transition focus:outline-none focus:ring-2 focus:ring-emerald-400"
+                className="mt-2 block w-full rounded-lg bg-neutral-800 px-4 py-3 font-mono text-sm placeholder-neutral-500 ring-1 ring-neutral-700 transition focus:outline-none focus:ring-2 focus:ring-emerald-400"
                 placeholder="Enter your hash key"
               />
             </div>
@@ -168,7 +168,7 @@ export default function LoginPage() {
               <button
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
-                className="w-full rounded-lg border border-neutral-700 bg-transparent px-4 py-3 text-sm font-semibold uppercase tracking-wide text-white transition hover:bg-neutral-800 focus:outline-none focus:ring-2 focus:ring-neutral-600"
+                className="w-full rounded-lg border border-neutral-700 bg-transparent px-4 py-3 text-sm font-semibold uppercase tracking-wide transition hover:bg-neutral-800 focus:outline-none focus:ring-2 focus:ring-neutral-600"
               >
                 Upload QR Code
               </button>

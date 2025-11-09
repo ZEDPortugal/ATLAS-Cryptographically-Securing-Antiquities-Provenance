@@ -1,5 +1,5 @@
 "use client"
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useRef, useState } from 'react'
 import jsQR from 'jsqr'
 import ProtectedRoute from '../components/ProtectedRoute'
 
@@ -14,144 +14,11 @@ export default function VerifyPage() {
   const [hash, setHash] = useState('')
   const [result, setResult] = useState(null)
   const [scanMessage, setScanMessage] = useState('')
-  const [isScanning, setIsScanning] = useState(false)
-  const [cameraSupported, setCameraSupported] = useState(false)
-  const [secureContext, setSecureContext] = useState(true)
 
-  const videoRef = useRef(null)
   const canvasRef = useRef(null)
-  const streamRef = useRef(null)
-  const frameRequestRef = useRef(null)
-
-  const stopCameraScan = useCallback(() => {
-    if (frameRequestRef.current) {
-      cancelAnimationFrame(frameRequestRef.current)
-      frameRequestRef.current = null
-    }
-
-    const stream = streamRef.current
-    if (stream) {
-      stream.getTracks().forEach((track) => track.stop())
-      streamRef.current = null
-    }
-
-    if (videoRef.current) {
-      videoRef.current.srcObject = null
-    }
-
-    setIsScanning(false)
-  }, [])
-
-  useEffect(() => {
-    // Determine if we're running in a secure context (required for camera on mobile browsers)
-    const isSecure = typeof window !== 'undefined' ? (window.isSecureContext ?? window.location.protocol === 'https:') : true
-    setSecureContext(isSecure)
-
-    if (
-      typeof navigator !== 'undefined' &&
-      navigator.mediaDevices &&
-      typeof navigator.mediaDevices.getUserMedia === 'function' &&
-      isSecure
-    ) {
-      setCameraSupported(true)
-    } else {
-      setCameraSupported(false)
-    }
-
-    return () => {
-      stopCameraScan()
-    }
-  }, [stopCameraScan])
-
-  // Capture the current camera frame and attempt to decode a QR payload.
-  const processFrame = useCallback(() => {
-    const videoEl = videoRef.current
-    const canvasEl = canvasRef.current
-    if (!videoEl || !canvasEl) {
-      return
-    }
-
-    if (videoEl.readyState !== videoEl.HAVE_ENOUGH_DATA) {
-      frameRequestRef.current = requestAnimationFrame(processFrame)
-      return
-    }
-
-    const context = canvasEl.getContext('2d', { willReadFrequently: true })
-    if (!context) {
-      frameRequestRef.current = requestAnimationFrame(processFrame)
-      return
-    }
-
-    canvasEl.width = videoEl.videoWidth
-    canvasEl.height = videoEl.videoHeight
-    context.drawImage(videoEl, 0, 0, canvasEl.width, canvasEl.height)
-    const imageData = context.getImageData(0, 0, canvasEl.width, canvasEl.height)
-    const code = jsQR(imageData.data, imageData.width, imageData.height, { inversionAttempts: 'dontInvert' })
-
-    if (code?.data) {
-      const decoded = code.data.trim()
-      setHash(decoded)
-      setScanMessage('QR detected. Hash populated from camera scan.')
-      stopCameraScan()
-      return
-    }
-
-    frameRequestRef.current = requestAnimationFrame(processFrame)
-  }, [stopCameraScan])
-
-  const startCameraScan = useCallback(async () => {
-    if (!cameraSupported || typeof navigator === 'undefined') {
-      setScanMessage(
-        secureContext
-          ? 'Camera access is not available in this browser.'
-          : 'Camera requires a secure context (HTTPS or localhost). Open this site over HTTPS to use the camera on mobile.'
-      )
-      return
-    }
-
-    try {
-      setScanMessage('Looking for QR...')
-      const constraints = {
-        video: {
-          facingMode: { ideal: 'environment' },
-          width: { ideal: 1280 },
-          height: { ideal: 720 },
-        },
-        audio: false,
-      }
-      const stream = await navigator.mediaDevices.getUserMedia(constraints)
-      const videoEl = videoRef.current
-      if (!videoEl) {
-        setScanMessage('Camera element not ready.')
-        stream.getTracks().forEach((track) => track.stop())
-        return
-      }
-
-      // iOS Safari quirks: ensure inline playback and mute before calling play()
-      videoEl.setAttribute('playsinline', 'true')
-      videoEl.setAttribute('webkit-playsinline', 'true')
-      videoEl.muted = true
-      videoEl.srcObject = stream
-      streamRef.current = stream
-      setIsScanning(true)
-      try {
-        await videoEl.play()
-      } catch (playErr) {
-        // Some mobile browsers require a direct user gesture; instruct user to tap the preview to start
-        setScanMessage('Camera ready. Tap the preview to start if it does not play automatically.')
-      }
-      frameRequestRef.current = requestAnimationFrame(processFrame)
-    } catch (err) {
-      stopCameraScan()
-      setScanMessage(err?.message ? `Camera error: ${err.message}` : 'Could not access the camera.')
-    }
-  }, [cameraSupported, processFrame, stopCameraScan])
 
   // Decode a QR code from an uploaded image and populate the hash field.
   const handleFileUpload = useCallback((event) => {
-    if (isScanning) {
-      stopCameraScan()
-    }
 
     const file = event.target.files?.[0]
     if (!file) {
@@ -204,7 +71,7 @@ export default function VerifyPage() {
     }
     reader.readAsDataURL(file)
     event.target.value = ''
-  }, [isScanning, stopCameraScan])
+  }, [])
 
   async function handleCheck(e) {
     e.preventDefault()
@@ -245,34 +112,25 @@ export default function VerifyPage() {
             />
             <div className="mt-3 flex flex-col gap-2 text-xs text-neutral-400">
               <div className="flex flex-col gap-2 rounded-xl border border-neutral-800 bg-neutral-900/60 p-4">
-                <div className="font-semibold uppercase tracking-[0.3em] text-neutral-300">Scan Options</div>
-                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
-                 
-                  <div>
-                    <input
-                      id="verify-qr-upload"
-                      type="file"
-                      accept="image/*;capture=camera"
-                      capture
-                      className="hidden"
-                      onChange={handleFileUpload}
-                    />
-                    <label
-                      htmlFor="verify-qr-upload"
-                      className="inline-block cursor-pointer rounded-lg border border-neutral-700 px-4 py-2 text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-white transition hover:border-emerald-400 hover:text-emerald-100"
-                    >
-                      Upload QR Image / Scan
-                    </label>
-                  </div>
+                <div className="font-semibold uppercase tracking-[0.3em] text-neutral-300">Upload QR Code</div>
+                <div>
+                  <input
+                    id="verify-qr-upload"
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={handleFileUpload}
+                  />
+                  <label
+                    htmlFor="verify-qr-upload"
+                    className="inline-block cursor-pointer rounded-lg border border-neutral-700 px-4 py-2 text-[0.7rem] font-semibold uppercase tracking-[0.2em] transition hover:border-emerald-400 hover:text-emerald-100"
+                  >
+                    Upload QR Image
+                  </label>
                 </div>
-                {scanMessage ? (
+                {scanMessage && (
                   <div className="text-[0.68rem] text-neutral-500">{scanMessage}</div>
-                ) : !secureContext ? (
-                  <div className="text-[0.68rem] text-yellow-500">
-                    Mobile browsers require HTTPS for camera access. Use a secure URL (for example, via a tunnel like ngrok)
-                    or open on localhost directly on the device.
-                  </div>
-                ) : null}
+                )}
               </div>
             </div>
           </div>
@@ -283,30 +141,6 @@ export default function VerifyPage() {
             Check
           </button>
         </form>
-
-        {isScanning ? (
-          <div className="mt-6 overflow-hidden rounded-2xl border border-neutral-800 bg-neutral-900/60 p-4">
-            <div className="text-xs uppercase tracking-[0.3em] text-neutral-400">Camera Preview</div>
-            <video
-              ref={videoRef}
-              className="mt-3 h-64 w-full rounded-xl bg-black object-cover"
-              muted
-              playsInline
-              autoPlay
-              onClick={async () => {
-                const el = videoRef.current
-                if (el && el.paused) {
-                  try {
-                    await el.play()
-                    setScanMessage('Camera started.')
-                  } catch (_) {
-                    // ignore
-                  }
-                }
-              }}
-            />
-          </div>
-        ) : null}
 
         <canvas ref={canvasRef} className="hidden" />
 
