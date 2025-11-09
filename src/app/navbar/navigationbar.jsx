@@ -112,70 +112,98 @@ export default function NavigationBar() {
 
 	return (
 		<>
-			<header className="hidden shrink-0 items-center justify-between gap-4 px-6 pt-6 pb-4 md:flex md:pt-10 md:pb-6 lg:px-12">
-				{/* Logo - Left */}
-				<Link href="/" className="flex items-center">
-					<div className="flex h-12 items-center rounded-full bg-neutral-900/80 px-6 shadow-lg shadow-black/50 ring-1 ring-neutral-700/50 backdrop-blur transition-all hover:ring-emerald-400/50 dark:bg-neutral-900/80 light:bg-neutral-100/80 light:ring-neutral-300/50">
-						<span className="font-golosText text-lg font-bold tracking-wider text-white dark:text-white light:text-neutral-900">A T L A S</span>
+			<header className="shrink-0 px-4 pt-4 pb-3 md:px-6 md:pt-6 md:pb-4 lg:px-12 lg:pt-10 lg:pb-6">
+				{/* Tablet/Desktop Layout */}
+				<div className="hidden md:block">
+					{/* Logo - Top on tablet, Left on desktop */}
+					<div className="flex items-center justify-center lg:hidden mb-4">
+						<Link href="/" className="flex items-center">
+							<div className="flex h-10 items-center rounded-full bg-neutral-900/80 px-4 shadow-lg shadow-black/50 ring-1 ring-neutral-700/50 backdrop-blur transition-all hover:ring-emerald-400/50 dark:bg-neutral-900/80 light:bg-neutral-100/80 light:ring-neutral-300/50">
+								<span className="font-golosText text-base font-bold tracking-wider text-white dark:text-white light:text-neutral-900">A T L A S</span>
+							</div>
+						</Link>
 					</div>
-				</Link>
 
-				{/* Navigation Links - Center */}
-				<nav
-					aria-label="Primary navigation"
-					className="flex-1 flex justify-center"
-				>
-					<ul className="relative flex items-center gap-2 rounded-full bg-neutral-900/80 px-6 py-3 shadow-lg shadow-black/50 ring-1 ring-neutral-700/50 backdrop-blur dark:bg-neutral-900/80 light:bg-neutral-100/80 light:ring-neutral-300/50">
-						<span
-							ref={indicatorRef}
-							style={{
-								width: `${indicatorStyle.width}px`,
-								left: `${indicatorStyle.left}px`,
-								opacity: indicatorStyle.opacity,
-							}}
-							className="pointer-events-none absolute bottom-1.5 h-1 rounded-full bg-emerald-400 transition-all duration-300 ease-out"
-						/>
-						{links.map((link) => {
-							const active = isActive(pathname, link.href);
-							const baseClasses = "font-golosText px-4 py-2 text-xs font-semibold uppercase tracking-[0.3em] transition-colors duration-200 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-emerald-400";
-							const activeClasses = "text-emerald-400";
-							const inactiveClasses = "text-neutral-300 hover:text-emerald-200 dark:text-neutral-300 light:text-neutral-600 light:hover:text-emerald-500";
+					{/* Navigation and Logout Row */}
+					<div className="flex items-center justify-between gap-4">
+						{/* Logo for Desktop */}
+						<Link href="/" className="hidden lg:flex items-center">
+							<div className="flex h-12 items-center rounded-full bg-neutral-900/80 px-6 shadow-lg shadow-black/50 ring-1 ring-neutral-700/50 backdrop-blur transition-all hover:ring-emerald-400/50 dark:bg-neutral-900/80 light:bg-neutral-100/80 light:ring-neutral-300/50">
+								<span className="font-golosText text-lg font-bold tracking-wider text-white dark:text-white light:text-neutral-900">A T L A S</span>
+							</div>
+						</Link>
 
-							return (
-								<li key={link.href}>
-									<Link
-										href={link.href}
-										aria-current={active ? "page" : undefined}
-										ref={(element) => {
-											if (!element) {
-												linkRefs.current.delete(link.href);
-												return;
-											}
-											linkRefs.current.set(link.href, element);
-										}}
-										className={classNames(baseClasses, active ? activeClasses : inactiveClasses)}
-									>
-										{link.label}
-									</Link>
-								</li>
-							);
-						})}
-					</ul>
-				</nav>
+						{/* Navigation Links - Center */}
+						<nav
+							aria-label="Primary navigation"
+							className="flex flex-1 justify-center"
+						>
+						<ul className="relative flex items-center gap-2 rounded-full bg-neutral-900/80 px-4 py-2 shadow-lg shadow-black/50 ring-1 ring-neutral-700/50 backdrop-blur dark:bg-neutral-900/80 light:bg-neutral-100/80 light:ring-neutral-300/50 lg:px-6 lg:py-3">
+							<span
+								ref={indicatorRef}
+								style={{
+									width: `${indicatorStyle.width}px`,
+									left: `${indicatorStyle.left}px`,
+									opacity: indicatorStyle.opacity,
+								}}
+								className="pointer-events-none absolute bottom-1.5 h-1 rounded-full bg-emerald-400 transition-all duration-300 ease-out"
+							/>
+							{links.map((link) => {
+								const active = isActive(pathname, link.href);
+								const baseClasses = "font-golosText px-3 py-1.5 text-[0.65rem] font-semibold uppercase tracking-[0.25em] transition-colors duration-200 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-emerald-400 lg:px-4 lg:py-2 lg:text-xs lg:tracking-[0.3em]";
+								const activeClasses = "text-emerald-400";
+								const inactiveClasses = "text-neutral-300 hover:text-emerald-200 dark:text-neutral-300 light:text-neutral-600 light:hover:text-emerald-500";
 
-				{/* Right Side - Theme Toggle and Logout */}
-				<div className="flex items-center gap-3">
-					<ThemeToggle />
-					<button
-						onClick={logout}
-						className="flex h-12 items-center rounded-full bg-neutral-900/80 px-6 shadow-lg shadow-black/50 ring-1 ring-neutral-700/50 backdrop-blur transition-all hover:ring-red-500/50 dark:bg-neutral-900/80 light:bg-neutral-100/80 light:ring-neutral-300/50"
-					>
-						<span className="font-golosText text-sm uppercase tracking-[0.3em] text-red-400 transition-colors hover:text-red-300 light:text-red-500 light:hover:text-red-600">
-							Logout
-						</span>
-					</button>
+								return (
+									<li key={link.href}>
+										<Link
+											href={link.href}
+											aria-current={active ? "page" : undefined}
+											ref={(element) => {
+												if (!element) {
+													linkRefs.current.delete(link.href);
+													return;
+												}
+												linkRefs.current.set(link.href, element);
+											}}
+											className={classNames(baseClasses, active ? activeClasses : inactiveClasses)}
+										>
+											{link.label}
+										</Link>
+									</li>
+								);
+							})}
+						</ul>
+					</nav>
+
+					{/* Right Side - Logout Button Only */}
+					<div className="flex items-center gap-3">
+						<button
+							onClick={logout}
+							className="flex h-10 items-center rounded-full bg-neutral-900/80 px-4 shadow-lg shadow-black/50 ring-1 ring-neutral-700/50 backdrop-blur transition-all hover:ring-red-500/50 dark:bg-neutral-900/80 light:bg-neutral-100/80 light:ring-neutral-300/50 lg:h-12 lg:px-6"
+						>
+							<span className="font-golosText text-xs uppercase tracking-[0.3em] text-red-400 transition-colors hover:text-red-300 light:text-red-500 light:hover:text-red-600 lg:text-sm">
+								Logout
+							</span>
+						</button>
+					</div>
+					</div>
+				</div>
+
+				{/* Mobile Logo Only */}
+				<div className="flex md:hidden items-center justify-center">
+					<Link href="/" className="flex items-center">
+						<div className="flex h-10 items-center rounded-full bg-neutral-900/80 px-4 shadow-lg shadow-black/50 ring-1 ring-neutral-700/50 backdrop-blur transition-all hover:ring-emerald-400/50 dark:bg-neutral-900/80 light:bg-neutral-100/80 light:ring-neutral-300/50">
+							<span className="font-golosText text-base font-bold tracking-wider text-white dark:text-white light:text-neutral-900">A T L A S</span>
+						</div>
+					</Link>
 				</div>
 			</header>
+
+			{/* Floating Theme Toggle Button - Tablet/Desktop Only */}
+			<div className="fixed bottom-6 left-6 z-50 hidden md:block">
+				<ThemeToggle />
+			</div>
 
 			{/* Floating Burger Menu Button */}
 			<button
@@ -243,6 +271,10 @@ export default function NavigationBar() {
 					</ul>
 					
 					<div className="mt-4 space-y-3 border-t border-neutral-800 pt-6">
+						<div className="flex items-center justify-between px-4 py-2">
+							<span className="font-golosText text-xs uppercase tracking-[0.3em] text-neutral-400">Theme</span>
+							<ThemeToggle />
+						</div>
 						<button
 							onClick={() => {
 								logout();

@@ -225,7 +225,7 @@ export default function VerifyPage() {
 
   return (
     <ProtectedRoute>
-    <div className="min-h-screen bg-neutral-950 py-12 px-4 text-white">
+    <div className="min-h-screen pb-12 px-4">
       <div className="mx-auto  w-full max-w-4xl rounded-3xl bg-neutral-900/70 p-6 sm:p-8 shadow-xl">
       <div className="mb-8 flex flex-wrap items-baseline gap-x-3 gap-y-1">
         <h1 className="text-3xl font-semibold uppercase tracking-[0.25em] text-emerald-400 sm:tracking-[0.4em]">Verify</h1>
@@ -237,7 +237,7 @@ export default function VerifyPage() {
           <div className="flex-1">
             <label className="text-xs uppercase tracking-widest text-neutral-400">Artifact Hash</label>
             <input
-              className="mt-2 w-full rounded-xl border border-neutral-700 bg-neutral-950/80 px-4 py-3 text-sm outline-none transition focus:border-emerald-400"
+              className="mt-2 w-full rounded-xl border border-neutral-700 dark:border-neutral-700 light:border-neutral-300 bg-neutral-950/80 dark:bg-neutral-950/80 light:bg-neutral-100/80 text-neutral-100 dark:text-neutral-100 light:text-neutral-900 px-4 py-3 text-sm outline-none transition focus:border-emerald-400"
               value={hash}
               onChange={(e) => setHash(e.target.value)}
               required
@@ -259,7 +259,7 @@ export default function VerifyPage() {
                     />
                     <label
                       htmlFor="verify-qr-upload"
-                      className="inline-block cursor-pointer rounded-lg border border-neutral-700 px-4 py-2 text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-neutral-200 transition hover:border-emerald-400 hover:text-emerald-100"
+                      className="inline-block cursor-pointer rounded-lg border border-neutral-700 px-4 py-2 text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-white transition hover:border-emerald-400 hover:text-emerald-100"
                     >
                       Upload QR Image / Scan
                     </label>
@@ -278,7 +278,7 @@ export default function VerifyPage() {
           </div>
           <button
             type="submit"
-            className="w-full rounded-xl bg-emerald-500 px-6 py-3 text-xs font-semibold uppercase tracking-[0.3em] text-white transition hover:bg-emerald-400 md:w-auto"
+            className="w-full rounded-xl bg-emerald-500 px-6 py-3 text-xs font-semibold uppercase tracking-[0.3em] transition hover:bg-emerald-400 md:w-auto"
           >
             Check
           </button>
@@ -315,10 +315,10 @@ export default function VerifyPage() {
             result.status === 'found' ? (
               <div className="space-y-6">
                 <div className="rounded-2xl border border-neutral-800 bg-neutral-900/60 p-6">
-                  <div className="flex flex-col gap-2 text-sm text-neutral-300 md:flex-row md:items-center md:justify-between">
+                  <div className="flex flex-col gap-2 text-sm text-neutral-300 dark:text-neutral-300 light:text-neutral-700 md:flex-row md:items-center md:justify-between">
                     <div>
                       <p className="text-xs uppercase tracking-[0.3em] text-emerald-400">Authentic</p>
-                      <p className="text-base text-white">Block #{result.block.index}</p>
+                      <p className="text-base text-neutral-100 dark:text-neutral-100 light:text-neutral-900">Block #{result.block.index}</p>
                     </div>
                     <div className="text-xs text-neutral-500">
                       Timestamp:{' '}
@@ -329,14 +329,14 @@ export default function VerifyPage() {
                     </div>
                   </div>
                   <div className="mt-4 text-sm text-neutral-400">
-                    <div>Hash: <span className="break-all text-neutral-100">{result.block.artifactHash}</span></div>
+                    <div>Hash: <span className="break-all text-neutral-100 dark:text-neutral-100 light:text-neutral-900">{result.block.artifactHash}</span></div>
                   </div>
                 </div>
 
                 {result.artifact ? (
                   <div className="space-y-6">
                     <div>
-                      <h2 className="text-xl font-semibold text-white">{result.artifact.name || 'Untitled Artifact'}</h2>
+                      <h2 className="text-xl font-semibold text-neutral-100 dark:text-neutral-100 light:text-neutral-900">{result.artifact.name || 'Untitled Artifact'}</h2>
                       <p className="mt-2 text-sm text-neutral-400 wrap-break-word">{result.artifact.description || 'No description provided.'}</p>
                     </div>
 

@@ -151,7 +151,7 @@ export default function RegisterPreviewPage() {
     return (
       <div
         key={key}
-        className={`overflow-hidden rounded-3xl border-2 border-white bg-neutral-950/60 shadow-sm transition ${containerClass}`}
+        className={`overflow-hidden rounded-3xl border-2 border-neutral-700 dark:border-neutral-700 light:border-neutral-300 bg-neutral-950/60 dark:bg-neutral-950/60 light:bg-neutral-100/60 shadow-sm transition ${containerClass}`}
       >
         {previewSrc ? (
           <img src={previewSrc} alt={`${label} view`} className={`h-full w-full object-cover ${imageClass}`} />
@@ -166,7 +166,7 @@ export default function RegisterPreviewPage() {
 
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-neutral-950 px-4 text-sm text-neutral-400">
+      <div className="flex min-h-screen items-center justify-center bg-background px-4 text-sm text-neutral-400">
         Loading preview...
       </div>
     )
@@ -174,12 +174,12 @@ export default function RegisterPreviewPage() {
 
   if (error) {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center gap-6 bg-neutral-950 px-4 text-center text-sm text-neutral-400">
+      <div className="flex min-h-screen flex-col items-center justify-center gap-6 bg-background px-4 text-center text-sm text-neutral-400">
         <div className="max-w-md text-balance">{error}</div>
         <button
           type="button"
           onClick={handleEdit}
-          className="rounded-full border border-white/40 px-8 py-3 text-sm font-semibold uppercase tracking-wider text-white transition hover:border-emerald-400 hover:text-emerald-400"
+          className="rounded-full border border-neutral-700 dark:border-neutral-700 light:border-neutral-300 px-8 py-3 text-sm font-semibold uppercase tracking-wider text-white transition hover:border-emerald-400 hover:text-emerald-400"
         >
           Back to form
         </button>
@@ -189,14 +189,14 @@ export default function RegisterPreviewPage() {
 
   return (
     <ProtectedRoute>
-    <div className="min-h-screen bg-neutral-950 py-12 px-4 text-white">
+    <div className="min-h-screen pb-12 px-4">
       <div className="mx-auto w-full max-w-4xl rounded-3xl bg-neutral-900/70 p-8 shadow-xl">
         <div className="mb-8 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
           <div className="flex">
             <h1 className="px-3 text-3xl font-semibold tracking-wide text-emerald-400">CREATE</h1>
-            <h1 className="text-3xl font-semibold tracking-wide text-white">ANTIQUE</h1>
+            <h1 className="text-3xl font-semibold tracking-wide text-neutral-100 dark:text-neutral-100 light:text-neutral-900">ANTIQUE</h1>
           </div>
-          <div className="rounded-full border border-white/20 px-4 py-2 text-xs font-semibold uppercase tracking-[0.4em] text-white/60">
+          <div className="rounded-full border border-neutral-700 dark:border-neutral-700 light:border-neutral-300 px-4 py-2 text-xs font-semibold uppercase tracking-[0.4em] text-neutral-400 dark:text-neutral-400 light:text-neutral-600">
             Preview
           </div>
         </div>
@@ -220,20 +220,20 @@ export default function RegisterPreviewPage() {
 
           <div className="flex flex-col gap-6">
             <div>
-              <h2 className="text-xl font-semibold text-white/90">{draft.name || 'Untitled Item'}</h2>
-              <p className="mt-3 text-sm leading-relaxed wrap-break-word text-white/60">
+              <h2 className="text-xl font-semibold text-neutral-100 dark:text-neutral-100 light:text-neutral-900">{draft.name || 'Untitled Item'}</h2>
+              <p className="mt-3 text-sm leading-relaxed wrap-break-word text-neutral-400 dark:text-neutral-400 light:text-neutral-600">
                 {draft.description || 'No description provided.'}
               </p>
             </div>
 
-            <div className="rounded-2xl border border-white/10 bg-neutral-950/60 p-5 text-sm text-white/60">
-              <div className="font-semibold uppercase tracking-wider text-white/70">Artifact Hash</div>
-              <div className="mt-2 text-xs text-white/50">
+            <div className="rounded-2xl border border-neutral-700 dark:border-neutral-700 light:border-neutral-300 bg-neutral-950/60 dark:bg-neutral-950/60 light:bg-neutral-100/60 p-5 text-sm text-neutral-400 dark:text-neutral-400 light:text-neutral-600">
+              <div className="font-semibold uppercase tracking-wider text-neutral-300 dark:text-neutral-300 light:text-neutral-700">Artifact Hash</div>
+              <div className="mt-2 text-xs text-neutral-500 dark:text-neutral-500 light:text-neutral-500">
                 The unique hash will be generated once you confirm.
               </div>
             </div>
 
-            <div className="text-xs text-white/40">
+            <div className="text-xs text-neutral-500 dark:text-neutral-500 light:text-neutral-500">
               Review the images and details before generating the item credentials.
             </div>
           </div>
@@ -243,7 +243,7 @@ export default function RegisterPreviewPage() {
           <button
             type="button"
             onClick={handleEdit}
-            className="w-full rounded-full border border-white/40 px-10 py-3 text-sm font-semibold uppercase tracking-wider text-white transition hover:border-emerald-400 hover:text-emerald-400 md:w-auto"
+            className="w-full rounded-full border border-neutral-700 dark:border-neutral-700 light:border-neutral-300 px-10 py-3 text-sm font-semibold uppercase tracking-wider text-white transition hover:border-emerald-400 hover:text-emerald-400 md:w-auto"
           >
             Edit details
           </button>
@@ -251,7 +251,7 @@ export default function RegisterPreviewPage() {
             type="button"
             onClick={handleConfirm}
             disabled={isConfirming}
-            className="w-full rounded-full bg-emerald-500 px-10 py-3 text-sm font-semibold uppercase tracking-wider text-white transition hover:bg-emerald-400 disabled:cursor-not-allowed disabled:opacity-60 md:w-auto"
+            className="w-full rounded-full bg-emerald-500 px-10 py-3 text-sm font-semibold uppercase tracking-wider transition hover:bg-emerald-400 disabled:cursor-not-allowed disabled:opacity-60 md:w-auto"
           >
             {isConfirming ? 'Generating hash...' : 'Generate hash'}
           </button>

@@ -74,13 +74,13 @@ Instructions:
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-neutral-950 px-4 py-12">
+    <div className="flex min-h-screen items-center justify-center px-4 py-12">
       <div className="w-full max-w-2xl space-y-8">
         <div className="text-center">
           <div className="inline-flex rounded-full bg-emerald-500/10 px-4 py-2 text-sm font-semibold text-emerald-400 ring-1 ring-emerald-500/20">
             ✓ Registration Successful
           </div>
-          <h1 className="mt-6 text-3xl font-bold tracking-tight text-white">
+          <h1 className="mt-6 text-3xl font-bold tracking-tight">
             Your Access Credentials
           </h1>
           <p className="mt-2 text-sm text-neutral-400">
@@ -164,7 +164,7 @@ export default function UserRegisterQRPage() {
   return (
     <Suspense
       fallback={
-        <div className="flex min-h-screen items-center justify-center bg-neutral-950">
+        <div className="flex min-h-screen items-center justify-center">
           <div className="text-neutral-400">Loading...</div>
         </div>
       }

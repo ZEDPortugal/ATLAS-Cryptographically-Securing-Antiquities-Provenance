@@ -1,5 +1,53 @@
-import { sql } from '@vercel/postgres';
 import crypto from 'crypto';
+import pg from 'pg';
+
+// Use pg for local development, Vercel Postgres for production
+const isProduction = process.env.VERCEL_ENV === 'production';
+
+let pool;
+if (!isProduction) {
+  // Local PostgreSQL using pg
+  const { Pool } = pg;
+  pool = new Pool({
+    connectionString: process.env.POSTGRES_URL,
+  });
+} else {
+  // Vercel Postgres for production
+  const { sql: vercelSql } = await import('@vercel/postgres');
+  pool = { sql: vercelSql };
+}
+
+// Helper function to execute SQL queries
+async function executeQuery(queryText, params = []) {
+  if (!isProduction) {
+    const result = await pool.query(queryText, params);
+    return { rows: result.rows };
+  } else {
+    return await pool.sql(queryText, params);
+  }
+}
+
+// Template literal SQL helper for local pg
+function sql(strings, ...values) {
+  if (!isProduction) {
+    // Convert template literal to parameterized query
+    let query = '';
+    const params = [];
+    
+    for (let i = 0; i < strings.length; i++) {
+      query += strings[i];
+      if (i < values.length) {
+        params.push(values[i]);
+        query += `$${params.length}`;
+      }
+    }
+    
+    return pool.query(query, params);
+  } else {
+    // Use Vercel's sql template literal
+    return pool.sql(strings, ...values);
+  }
+}
 
 export async function initializeDatabase() {
   try {

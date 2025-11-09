@@ -57,13 +57,13 @@ export default function DevRegisterPage() {
 
   if (!isVerified) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-neutral-950 px-4">
+      <div className="flex min-h-screen items-center justify-center px-4">
         <div className="w-full max-w-md space-y-8">
           <div className="text-center">
             <div className="inline-flex rounded-full bg-amber-500/10 px-4 py-2 text-sm font-semibold text-amber-400 ring-1 ring-amber-500/20">
               Developer Access Required
             </div>
-            <h1 className="mt-6 text-4xl font-bold tracking-tight text-white">
+            <h1 className="mt-6 text-4xl font-bold tracking-tight">
               User Registration
             </h1>
             <p className="mt-2 text-sm text-neutral-400">
@@ -117,13 +117,13 @@ export default function DevRegisterPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-neutral-950 px-4">
+    <div className="flex min-h-screen items-center justify-center px-4">
       <div className="w-full max-w-md space-y-8">
         <div className="text-center">
           <div className="inline-flex rounded-full bg-emerald-500/10 px-4 py-2 text-sm font-semibold text-emerald-400 ring-1 ring-emerald-500/20">
             ✓ Developer Access Granted
           </div>
-          <h1 className="mt-6 text-4xl font-bold tracking-tight text-white">
+          <h1 className="mt-6 text-4xl font-bold tracking-tight">
             User Registration
           </h1>
           <p className="mt-2 text-sm text-neutral-400">
@@ -199,7 +199,7 @@ export default function DevRegisterPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full rounded-lg bg-emerald-500 px-4 py-3 text-sm font-semibold uppercase tracking-wide text-white transition hover:bg-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:ring-offset-2 focus:ring-offset-neutral-900 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full rounded-lg bg-emerald-500 px-4 py-3 text-sm font-semibold uppercase tracking-wide transition hover:bg-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:ring-offset-2 focus:ring-offset-neutral-900 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? "Registering..." : "Register User"}
             </button>

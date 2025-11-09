@@ -120,7 +120,7 @@ export default function RegisterQrPageClient() {
 
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-neutral-950 px-4 text-sm text-neutral-400">
+      <div className="flex min-h-screen items-center justify-center px-4 text-sm text-neutral-400">
         Preparing QR code...
       </div>
     )
@@ -128,12 +128,12 @@ export default function RegisterQrPageClient() {
 
   if (error) {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center gap-6 bg-neutral-950 px-4 text-center text-sm text-neutral-400">
+      <div className="flex min-h-screen flex-col items-center justify-center gap-6 px-4 text-center text-sm text-neutral-400">
         <div className="max-w-md text-balance">{error}</div>
         <button
           type="button"
           onClick={handleDone}
-          className="rounded-full border border-white/40 px-8 py-3 text-sm font-semibold uppercase tracking-wider text-white transition hover:border-emerald-400 hover:text-emerald-400"
+          className="rounded-full border border-white/40 px-8 py-3 text-sm font-semibold uppercase tracking-wider transition hover:border-emerald-400 hover:text-emerald-400"
         >
           Back to form
         </button>
@@ -142,12 +142,12 @@ export default function RegisterQrPageClient() {
   }
 
   return (
-    <div className="min-h-screen bg-neutral-950 py-12 px-4 text-white">
+    <div className="min-h-screen pb-12 px-4">
       <div className="mx-auto w-full max-w-4xl rounded-3xl bg-neutral-900/70 p-8 shadow-xl">
         <div className="mb-8 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
           <div className="flex">
             <h1 className="px-3 text-3xl font-semibold tracking-wide text-emerald-400">CREATE</h1>
-            <h1 className="text-3xl font-semibold tracking-wide text-white">ANTIQUE</h1>
+            <h1 className="text-3xl font-semibold tracking-wide">ANTIQUE</h1>
           </div>
           <div className="rounded-full border border-white/20 px-4 py-2 text-xs font-semibold uppercase tracking-[0.4em] text-white/60">
             Credentials
@@ -190,7 +190,7 @@ export default function RegisterQrPageClient() {
           <button
             type="button"
             onClick={handleDone}
-            className="w-full rounded-full bg-emerald-500 px-10 py-3 text-sm font-semibold uppercase tracking-wider text-white transition hover:bg-emerald-400 md:w-auto"
+            className="w-full rounded-full bg-emerald-500 px-10 py-3 text-sm font-semibold uppercase tracking-wider  transition hover:bg-emerald-400 md:w-auto"
           >
             Done
           </button>
