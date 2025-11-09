@@ -26,10 +26,10 @@ export async function initializeDatabase() {
         description TEXT,
         images JSONB NOT NULL,
         created_at BIGINT NOT NULL,
-        combined_hash VARCHAR(128),
-        image_phash VARCHAR(128),
+        combined_hash VARCHAR(255),
+        image_phash VARCHAR(255),
         text_sig TEXT,
-        provenance_digest VARCHAR(128)
+        provenance_digest VARCHAR(255)
       )
     `;
     
