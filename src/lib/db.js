@@ -1,55 +1,7 @@
 import crypto from 'crypto';
-import pg from 'pg';
+import { sql } from '@vercel/postgres';
 
-// Use pg for local development, Vercel Postgres for production
-const isProduction = process.env.VERCEL_ENV === 'production';
-
-let pool;
-if (!isProduction) {
-  // Local PostgreSQL using pg
-  const { Pool } = pg;
-  pool = new Pool({
-    connectionString: process.env.POSTGRES_URL,
-  });
-} else {
-  // Vercel Postgres for production
-  const { sql: vercelSql } = await import('@vercel/postgres');
-  pool = { sql: vercelSql };
-}
-
-// Helper function to execute SQL queries
-async function executeQuery(queryText, params = []) {
-  if (!isProduction) {
-    const result = await pool.query(queryText, params);
-    return { rows: result.rows };
-  } else {
-    return await pool.sql(queryText, params);
-  }
-}
-
-// Template literal SQL helper for local pg
-function sql(strings, ...values) {
-  if (!isProduction) {
-    // Convert template literal to parameterized query
-    let query = '';
-    const params = [];
-    
-    for (let i = 0; i < strings.length; i++) {
-      query += strings[i];
-      if (i < values.length) {
-        params.push(values[i]);
-        query += `$${params.length}`;
-      }
-    }
-    
-    return pool.query(query, params);
-  } else {
-    // Use Vercel's sql template literal
-    return pool.sql(strings, ...values);
-  }
-}
-
-// Export the sql helper so other modules can use the same serverless-friendly client in production
+// Export the sql helper so other modules can use the same serverless-friendly client
 export { sql };
 
 export async function initializeDatabase() {
@@ -117,6 +69,9 @@ export async function initializeDatabase() {
     console.log('Database initialized successfully');
   } catch (error) {
     console.error('Error initializing database:', error);
+    // In a serverless environment, it's better to throw the error
+    // to understand what's failing during deployment or execution.
+    throw new Error(`Database initialization failed: ${error.message}`);
   }
 }
 
