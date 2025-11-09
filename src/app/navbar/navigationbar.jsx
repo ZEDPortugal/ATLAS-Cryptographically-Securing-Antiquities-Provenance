@@ -112,22 +112,22 @@ export default function NavigationBar() {
 
 	return (
 		<>
-			<header className="shrink-0 px-4 pt-4 pb-3 md:px-6 md:pt-6 md:pb-4 lg:px-12 lg:pt-10 lg:pb-6">
+			<header className="shrink-0 px-4 pt-4 pb-3 md:px-6 md:pt-6 md:pb-4 xl:px-12 xl:pt-10 xl:pb-6">
 				{/* Tablet/Desktop Layout */}
 				<div className="hidden md:block">
-					{/* Logo - Top on tablet, Left on desktop */}
-					<div className="flex items-center justify-center lg:hidden mb-4">
+					{/* Logo - Top on tablet/iPad, Left on large desktop */}
+					<div className="flex items-center justify-center xl:hidden mb-4">
 						<Link href="/" className="flex items-center">
-							<div className="flex h-10 items-center rounded-full bg-neutral-900/80 px-4 shadow-lg shadow-black/50 ring-1 ring-neutral-700/50 backdrop-blur transition-all hover:ring-emerald-400/50 dark:bg-neutral-900/80 light:bg-neutral-100/80 light:ring-neutral-300/50">
-								<span className="font-golosText text-base font-bold tracking-wider text-white dark:text-white light:text-neutral-900">A T L A S</span>
+							<div className="flex h-10 items-center rounded-full bg-neutral-900/80 px-4 shadow-lg shadow-black/50 ring-1 ring-neutral-700/50 backdrop-blur transition-all hover:ring-emerald-400/50 dark:bg-neutral-900/80 light:bg-neutral-100/80 light:ring-neutral-300/50 lg:h-11 lg:px-5">
+								<span className="font-golosText text-base font-bold tracking-wider text-white dark:text-white light:text-neutral-900 lg:text-[1.05rem]">A T L A S</span>
 							</div>
 						</Link>
 					</div>
 
 					{/* Navigation and Logout Row */}
-					<div className="flex items-center justify-between gap-4">
-						{/* Logo for Desktop */}
-						<Link href="/" className="hidden lg:flex items-center">
+					<div className="flex items-center justify-between gap-3 lg:gap-4">
+						{/* Logo for Large Desktop */}
+						<Link href="/" className="hidden xl:flex items-center">
 							<div className="flex h-12 items-center rounded-full bg-neutral-900/80 px-6 shadow-lg shadow-black/50 ring-1 ring-neutral-700/50 backdrop-blur transition-all hover:ring-emerald-400/50 dark:bg-neutral-900/80 light:bg-neutral-100/80 light:ring-neutral-300/50">
 								<span className="font-golosText text-lg font-bold tracking-wider text-white dark:text-white light:text-neutral-900">A T L A S</span>
 							</div>
@@ -138,7 +138,7 @@ export default function NavigationBar() {
 							aria-label="Primary navigation"
 							className="flex flex-1 justify-center"
 						>
-						<ul className="relative flex items-center gap-2 rounded-full bg-neutral-900/80 px-4 py-2 shadow-lg shadow-black/50 ring-1 ring-neutral-700/50 backdrop-blur dark:bg-neutral-900/80 light:bg-neutral-100/80 light:ring-neutral-300/50 lg:px-6 lg:py-3">
+						<ul className="relative flex items-center gap-1.5 rounded-full bg-neutral-900/80 px-3 py-2 shadow-lg shadow-black/50 ring-1 ring-neutral-700/50 backdrop-blur dark:bg-neutral-900/80 light:bg-neutral-100/80 light:ring-neutral-300/50 lg:gap-2 lg:px-4 xl:px-6 xl:py-3">
 							<span
 								ref={indicatorRef}
 								style={{
@@ -150,7 +150,7 @@ export default function NavigationBar() {
 							/>
 							{links.map((link) => {
 								const active = isActive(pathname, link.href);
-								const baseClasses = "font-golosText px-3 py-1.5 text-[0.65rem] font-semibold uppercase tracking-[0.25em] transition-colors duration-200 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-emerald-400 lg:px-4 lg:py-2 lg:text-xs lg:tracking-[0.3em]";
+								const baseClasses = "font-golosText px-2.5 py-1.5 text-[0.6rem] font-semibold uppercase tracking-[0.2em] transition-colors duration-200 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-emerald-400 lg:px-3 lg:text-[0.65rem] lg:tracking-[0.25em] xl:px-4 xl:py-2 xl:text-xs xl:tracking-[0.3em]";
 								const activeClasses = "text-emerald-400";
 								const inactiveClasses = "text-neutral-300 hover:text-emerald-200 dark:text-neutral-300 light:text-neutral-600 light:hover:text-emerald-500";
 
@@ -180,9 +180,9 @@ export default function NavigationBar() {
 					<div className="flex items-center gap-3">
 						<button
 							onClick={logout}
-							className="flex h-10 items-center rounded-full bg-neutral-900/80 px-4 shadow-lg shadow-black/50 ring-1 ring-neutral-700/50 backdrop-blur transition-all hover:ring-red-500/50 dark:bg-neutral-900/80 light:bg-neutral-100/80 light:ring-neutral-300/50 lg:h-12 lg:px-6"
+							className="flex h-10 items-center rounded-full bg-neutral-900/80 px-3 shadow-lg shadow-black/50 ring-1 ring-neutral-700/50 backdrop-blur transition-all hover:ring-red-500/50 dark:bg-neutral-900/80 light:bg-neutral-100/80 light:ring-neutral-300/50 lg:h-11 lg:px-4 xl:h-12 xl:px-6"
 						>
-							<span className="font-golosText text-xs uppercase tracking-[0.3em] text-red-400 transition-colors hover:text-red-300 light:text-red-500 light:hover:text-red-600 lg:text-sm">
+							<span className="font-golosText text-[0.65rem] uppercase tracking-[0.25em] text-red-400 transition-colors hover:text-red-300 light:text-red-500 light:hover:text-red-600 lg:text-xs lg:tracking-[0.28em] xl:text-sm xl:tracking-[0.3em]">
 								Logout
 							</span>
 						</button>
