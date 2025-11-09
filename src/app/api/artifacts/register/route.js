@@ -22,15 +22,24 @@ export async function POST(req) {
     // Initialize database (safe to call multiple times)
     await initializeDatabase()
     
-    const block = await appendBlock({ artifactHash: hash, owner: name })
+    // Save artifact FIRST (before blockchain entry due to foreign key constraint)
     await saveArtifact(hash, {
       name: art.name,
       description: art.description,
       images: art.images,
       createdAt: Date.now(),
     })
+    
+    // Then append to blockchain (references artifact)
+    const block = await appendBlock({ artifactHash: hash, owner: name })
+    
     return NextResponse.json({ status: 'ok', hash, block })
   } catch (e) {
-    return NextResponse.json({ error: 'storage error', detail: String(e) }, { status: 500 })
+    console.error('Artifact registration error:', e)
+    return NextResponse.json({ 
+      error: 'storage error', 
+      detail: e.message || String(e),
+      stack: process.env.NODE_ENV === 'development' ? e.stack : undefined
+    }, { status: 500 })
   }
 }
