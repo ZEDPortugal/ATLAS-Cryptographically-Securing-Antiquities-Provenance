@@ -39,7 +39,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${ebGaramond.variable} ${golosText.variable} ${geistMono.variable} antialiased`}
+        className={`${golosText.variable} ${geistMono.variable} ${ebGaramond.variable} ${geistSans.variable} antialiased font-golosText`}
       >
         <AuthProvider>
           <ThemeProvider>
