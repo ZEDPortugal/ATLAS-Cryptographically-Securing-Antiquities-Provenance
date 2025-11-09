@@ -111,20 +111,20 @@ export default function NavigationBar() {
 
 	return (
 		<>
-			<header className="flex shrink-0 items-center justify-center px-4 pt-6 pb-4 md:pt-10 md:pb-6">
+			<header className="hidden shrink-0 items-center justify-between gap-4 px-6 pt-6 pb-4 md:flex md:pt-10 md:pb-6 lg:px-12">
+				{/* Logo - Left */}
+				<Link href="/" className="flex items-center">
+					<div className="flex h-12 items-center rounded-full bg-neutral-900/80 px-6 shadow-lg shadow-black/50 ring-1 ring-neutral-700/50 backdrop-blur transition-all hover:ring-emerald-400/50">
+						<span className="text-lg font-bold tracking-wider text-emerald-400">ATLAS</span>
+					</div>
+				</Link>
+
+				{/* Navigation Links - Center */}
 				<nav
 					aria-label="Primary navigation"
-					className="hidden rounded-full bg-neutral-900/80 px-6 py-3 shadow-lg shadow-black/50 ring-1 ring-neutral-700/50 backdrop-blur md:flex md:items-center md:gap-8"
+					className="flex-1 flex justify-center"
 				>
-					{/* Logo */}
-					<Link href="/" className="flex items-center">
-						<div className="flex h-10 items-center rounded-full bg-emerald-400/10 px-5 ring-1 ring-emerald-400/30 transition-all hover:bg-emerald-400/20 hover:ring-emerald-400/50">
-							<span className="text-base font-bold tracking-wider text-emerald-400">ATLAS</span>
-						</div>
-					</Link>
-
-					{/* Navigation Links */}
-					<ul className="flex items-center gap-2">
+					<ul className="flex items-center gap-2 rounded-full bg-neutral-900/80 px-6 py-3 shadow-lg shadow-black/50 ring-1 ring-neutral-700/50 backdrop-blur">
 						{links.map((link) => {
 							const active = isActive(pathname, link.href);
 							const baseClasses = "px-4 py-2 text-xs font-semibold uppercase tracking-[0.3em] transition-colors duration-200 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-emerald-400";
@@ -144,15 +144,17 @@ export default function NavigationBar() {
 							);
 						})}
 					</ul>
-
-					{/* Logout Button */}
-					<button
-						onClick={logout}
-						className="rounded-full bg-red-500/10 px-6 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-red-400 ring-1 ring-red-500/20 transition-all duration-200 hover:bg-red-500/20 hover:ring-red-500/40 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-red-400"
-					>
-						Logout
-					</button>
 				</nav>
+
+				{/* Logout Button - Right */}
+				<button
+					onClick={logout}
+					className="flex h-12 items-center rounded-full bg-neutral-900/80 px-6 shadow-lg shadow-black/50 ring-1 ring-neutral-700/50 backdrop-blur transition-all hover:ring-red-500/50"
+				>
+					<span className="text-sm font-semibold uppercase tracking-[0.3em] text-red-400 transition-colors hover:text-red-300">
+						Logout
+					</span>
+				</button>
 			</header>
 
 			{/* Floating Burger Menu Button */}
