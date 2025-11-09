@@ -1,10 +1,43 @@
 @import "tailwindcss";
 
-
-
-:root {
+/* Light mode colors */
+:root.light {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #0a0a0a;
+  --neutral-50: #fafafa;
+  --neutral-100: #f5f5f5;
+  --neutral-200: #e5e5e5;
+  --neutral-300: #d4d4d4;
+  --neutral-400: #a3a3a3;
+  --neutral-500: #737373;
+  --neutral-600: #525252;
+  --neutral-700: #404040;
+  --neutral-800: #262626;
+  --neutral-900: #171717;
+  --neutral-950: #0a0a0a;
+}
+
+/* Dark mode colors */
+:root.dark {
+  --background: #0a0a0a;
+  --foreground: #ededed;
+  --neutral-50: #0a0a0a;
+  --neutral-100: #171717;
+  --neutral-200: #262626;
+  --neutral-300: #404040;
+  --neutral-400: #525252;
+  --neutral-500: #737373;
+  --neutral-600: #a3a3a3;
+  --neutral-700: #d4d4d4;
+  --neutral-800: #e5e5e5;
+  --neutral-900: #f5f5f5;
+  --neutral-950: #fafafa;
+}
+
+/* Default to dark mode */
+:root {
+  --background: #0a0a0a;
+  --foreground: #ededed;
 }
 
 @theme inline {
@@ -17,19 +50,13 @@
   --font-golosText: var(--font-golos-text);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
- 
   background-color: var(--background);
   background-repeat: no-repeat;
   background-position: center;
   background-size: 100%;
   color: var(--foreground);
   font-family: var(--font-golosText);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
+

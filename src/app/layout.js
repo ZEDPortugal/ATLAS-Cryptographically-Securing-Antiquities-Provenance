@@ -2,6 +2,7 @@ import { Geist, Geist_Mono, EB_Garamond, Roboto, Golos_Text} from "next/font/goo
 import "./globals.css";
 import ConditionalNav from "./components/ConditionalNav";
 import { AuthProvider } from "./context/AuthContext";
+import { ThemeProvider } from "./context/ThemeContext";
 
 const golosText = Golos_Text({
   variable: "--font-golos-text",
@@ -41,10 +42,12 @@ export default function RootLayout({ children }) {
         className={`${geistSans.variable} ${ebGaramond.variable} ${golosText.variable} ${geistMono.variable} antialiased`}
       >
         <AuthProvider>
-          <div className="flex min-h-screen flex-col bg-neutral-950 text-white">
-            <ConditionalNav />
-            <div className="flex-1">{children}</div>
-          </div>
+          <ThemeProvider>
+            <div className="flex min-h-screen flex-col bg-background text-foreground transition-colors duration-300">
+              <ConditionalNav />
+              <div className="flex-1">{children}</div>
+            </div>
+          </ThemeProvider>
         </AuthProvider>
       </body>
     </html>

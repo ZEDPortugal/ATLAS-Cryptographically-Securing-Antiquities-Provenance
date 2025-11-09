@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { useAuth } from "../context/AuthContext";
+import ThemeToggle from "../components/ThemeToggle";
 
 const links = [
 	{ label: "dashboard", href: "/" },
@@ -114,8 +115,8 @@ export default function NavigationBar() {
 			<header className="hidden shrink-0 items-center justify-between gap-4 px-6 pt-6 pb-4 md:flex md:pt-10 md:pb-6 lg:px-12">
 				{/* Logo - Left */}
 				<Link href="/" className="flex items-center">
-					<div className="flex h-12 items-center rounded-full bg-neutral-900/80 px-6 shadow-lg shadow-black/50 ring-1 ring-neutral-700/50 backdrop-blur transition-all hover:ring-emerald-400/50">
-						<span className="font-golosText text-lg font-bold tracking-wider text-white">A T L A S</span>
+					<div className="flex h-12 items-center rounded-full bg-neutral-900/80 px-6 shadow-lg shadow-black/50 ring-1 ring-neutral-700/50 backdrop-blur transition-all hover:ring-emerald-400/50 dark:bg-neutral-900/80 light:bg-neutral-100/80 light:ring-neutral-300/50">
+						<span className="font-golosText text-lg font-bold tracking-wider text-white dark:text-white light:text-neutral-900">A T L A S</span>
 					</div>
 				</Link>
 
@@ -124,7 +125,7 @@ export default function NavigationBar() {
 					aria-label="Primary navigation"
 					className="flex-1 flex justify-center"
 				>
-					<ul className="relative flex items-center gap-2 rounded-full bg-neutral-900/80 px-6 py-3 shadow-lg shadow-black/50 ring-1 ring-neutral-700/50 backdrop-blur">
+					<ul className="relative flex items-center gap-2 rounded-full bg-neutral-900/80 px-6 py-3 shadow-lg shadow-black/50 ring-1 ring-neutral-700/50 backdrop-blur dark:bg-neutral-900/80 light:bg-neutral-100/80 light:ring-neutral-300/50">
 						<span
 							ref={indicatorRef}
 							style={{
@@ -138,7 +139,7 @@ export default function NavigationBar() {
 							const active = isActive(pathname, link.href);
 							const baseClasses = "font-golosText px-4 py-2 text-xs font-semibold uppercase tracking-[0.3em] transition-colors duration-200 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-emerald-400";
 							const activeClasses = "text-emerald-400";
-							const inactiveClasses = "text-neutral-300 hover:text-emerald-200";
+							const inactiveClasses = "text-neutral-300 hover:text-emerald-200 dark:text-neutral-300 light:text-neutral-600 light:hover:text-emerald-500";
 
 							return (
 								<li key={link.href}>
@@ -162,15 +163,18 @@ export default function NavigationBar() {
 					</ul>
 				</nav>
 
-				{/* Logout Button - Right */}
-				<button
-					onClick={logout}
-					className="flex h-12 items-center rounded-full bg-neutral-900/80 px-6 shadow-lg shadow-black/50 ring-1 ring-neutral-700/50 backdrop-blur transition-all hover:ring-red-500/50"
-				>
-					<span className="font-golosText text-sm uppercase tracking-[0.3em] text-red-400 transition-colors hover:text-red-300">
-						Logout
-					</span>
-				</button>
+				{/* Right Side - Theme Toggle and Logout */}
+				<div className="flex items-center gap-3">
+					<ThemeToggle />
+					<button
+						onClick={logout}
+						className="flex h-12 items-center rounded-full bg-neutral-900/80 px-6 shadow-lg shadow-black/50 ring-1 ring-neutral-700/50 backdrop-blur transition-all hover:ring-red-500/50 dark:bg-neutral-900/80 light:bg-neutral-100/80 light:ring-neutral-300/50"
+					>
+						<span className="font-golosText text-sm uppercase tracking-[0.3em] text-red-400 transition-colors hover:text-red-300 light:text-red-500 light:hover:text-red-600">
+							Logout
+						</span>
+					</button>
+				</div>
 			</header>
 
 			{/* Floating Burger Menu Button */}
