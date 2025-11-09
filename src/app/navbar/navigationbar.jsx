@@ -115,7 +115,7 @@ export default function NavigationBar() {
 				{/* Logo - Left */}
 				<Link href="/" className="flex items-center">
 					<div className="flex h-12 items-center rounded-full bg-neutral-900/80 px-6 shadow-lg shadow-black/50 ring-1 ring-neutral-700/50 backdrop-blur transition-all hover:ring-emerald-400/50">
-						<span className="text-lg font-bold tracking-wider text-white">ATLAS</span>
+						<span className="font-golosText text-lg font-bold tracking-wider text-white">A T L A S</span>
 					</div>
 				</Link>
 
@@ -136,7 +136,7 @@ export default function NavigationBar() {
 						/>
 						{links.map((link) => {
 							const active = isActive(pathname, link.href);
-							const baseClasses = "px-4 py-2 text-xs font-semibold uppercase tracking-[0.3em] transition-colors duration-200 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-emerald-400";
+							const baseClasses = "font-golosText px-4 py-2 text-xs font-semibold uppercase tracking-[0.3em] transition-colors duration-200 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-emerald-400";
 							const activeClasses = "text-emerald-400";
 							const inactiveClasses = "text-neutral-300 hover:text-emerald-200";
 
@@ -167,7 +167,7 @@ export default function NavigationBar() {
 					onClick={logout}
 					className="flex h-12 items-center rounded-full bg-neutral-900/80 px-6 shadow-lg shadow-black/50 ring-1 ring-neutral-700/50 backdrop-blur transition-all hover:ring-red-500/50"
 				>
-					<span className="text-sm uppercase tracking-[0.3em] text-red-400 transition-colors hover:text-red-300">
+					<span className="font-golosText text-sm uppercase tracking-[0.3em] text-red-400 transition-colors hover:text-red-300">
 						Logout
 					</span>
 				</button>
@@ -215,11 +215,11 @@ export default function NavigationBar() {
 				)}
 			>
 				<div className="flex flex-col gap-6">
-					<p className="text-sm uppercase tracking-[0.35em] text-neutral-500">Navigate</p>
+					<p className="font-golosText text-sm uppercase tracking-[0.35em] text-neutral-500">Navigate</p>
 					<ul className="flex flex-col gap-2 text-xs uppercase tracking-[0.3em]">
 						{links.map((link) => {
 							const active = isActive(pathname, link.href);
-							const baseClasses = "block rounded-xl px-4 py-3 font-semibold transition focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-emerald-400";
+							const baseClasses = "font-golosText block rounded-xl px-4 py-3 font-semibold transition focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-emerald-400";
 							const activeClasses = "bg-emerald-500/10 text-emerald-300";
 							const inactiveClasses = "text-neutral-200 hover:bg-neutral-800/60 hover:text-emerald-200";
 
@@ -244,7 +244,7 @@ export default function NavigationBar() {
 								logout();
 								closeMenu();
 							}}
-							className="block w-full rounded-xl bg-red-500/10 px-4 py-3 text-left text-xs font-semibold uppercase tracking-[0.3em] text-red-400 transition hover:bg-red-500/20 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-red-400"
+							className="font-golosText block w-full rounded-xl bg-red-500/10 px-4 py-3 text-left text-xs font-semibold uppercase tracking-[0.3em] text-red-400 transition hover:bg-red-500/20 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-red-400"
 						>
 							Logout
 						</button>
