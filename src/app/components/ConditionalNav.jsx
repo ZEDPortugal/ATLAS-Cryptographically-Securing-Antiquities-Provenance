@@ -7,7 +7,7 @@ export default function ConditionalNav() {
   const pathname = usePathname();
   
   // Don't show navigation on login and registration pages
-  const hideNavPages = ["/login", "/dev-register", "/user-register"];
+  const hideNavPages = ["/login", "/dev-register", "/user-register", "/verify-secure"];
   const shouldHideNav = hideNavPages.some(page => pathname.startsWith(page));
   
   if (shouldHideNav) {

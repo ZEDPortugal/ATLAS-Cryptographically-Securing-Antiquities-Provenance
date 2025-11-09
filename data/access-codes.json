@@ -1,0 +1,21 @@
+{
+  "codes": [
+    {
+      "code": "KFSA-8U6M",
+      "createdAt": 1762717043800,
+      "expiresAt": 1762889843800,
+      "createdBy": "staff",
+      "used": false,
+      "usageCount": 0
+    },
+    {
+      "code": "2977-74VH",
+      "createdAt": 1762718536281,
+      "expiresAt": 1762891336281,
+      "createdBy": "staff",
+      "used": false,
+      "usageCount": 1,
+      "lastUsed": 1762718560824
+    }
+  ]
+}

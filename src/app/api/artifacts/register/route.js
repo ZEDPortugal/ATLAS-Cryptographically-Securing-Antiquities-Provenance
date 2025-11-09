@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import Artifact from '../../../../lib/artifact'
+import { computeMultiModalHash } from '../../../../lib/hash'
 import { appendBlock, saveArtifact, initializeDatabase } from '../../../../lib/db'
 
 export async function POST(req) {
@@ -16,7 +17,9 @@ export async function POST(req) {
   if (missingViews.length) {
     return NextResponse.json({ error: `Missing image(s): ${missingViews.join(', ')}` }, { status: 400 })
   }
-  const hash = art.computeHash()
+  // Compute multi-modal hash components and composite
+  const mm = computeMultiModalHash({ name: art.name, description: art.description, images: art.images })
+  const hash = mm.combined_hash
 
   try {
     // Initialize database (safe to call multiple times)
@@ -28,10 +31,14 @@ export async function POST(req) {
       description: art.description,
       images: art.images,
       createdAt: Date.now(),
+      combinedHash: mm.combined_hash,
+      imagePhash: mm.image_phash,
+      textSig: mm.text_sig,
+      provenanceDigest: mm.provenance_digest,
     })
     
     // Then append to blockchain (references artifact)
-    const block = await appendBlock({ artifactHash: hash, owner: name })
+  const block = await appendBlock({ artifactHash: hash, owner: name })
     
     return NextResponse.json({ status: 'ok', hash, block })
   } catch (e) {

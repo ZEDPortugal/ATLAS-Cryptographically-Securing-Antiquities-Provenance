@@ -1,5 +1,5 @@
 "use client"
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useAuth } from '../context/AuthContext'
 import { 
@@ -16,11 +16,48 @@ import {
   HiDatabase,
   HiSparkles,
   HiClipboardList,
-  HiChevronRight
+  HiChevronRight,
+  HiKey
 } from 'react-icons/hi'
 
 export default function MainRouter() {
   const { user } = useAuth()
+  const [accessCodeStats, setAccessCodeStats] = useState({
+    total: 0,
+    active: 0,
+    expired: 0,
+    totalUsage: 0,
+    loading: true
+  })
+
+  useEffect(() => {
+    fetchAccessCodeStats()
+  }, [])
+
+  const fetchAccessCodeStats = async () => {
+    try {
+      const res = await fetch('/api/access-codes/list')
+      const data = await res.json()
+      
+      if (data.success) {
+        const now = Date.now()
+        const active = data.codes.filter(code => code.expiresAt > now).length
+        const expired = data.codes.filter(code => code.expiresAt <= now).length
+        const totalUsage = data.codes.reduce((sum, code) => sum + (code.usageCount || 0), 0)
+        
+        setAccessCodeStats({
+          total: data.codes.length,
+          active,
+          expired,
+          totalUsage,
+          loading: false
+        })
+      }
+    } catch (error) {
+      console.error('Failed to fetch access code stats:', error)
+      setAccessCodeStats(prev => ({ ...prev, loading: false }))
+    }
+  }
 
   const quickActions = [
     {
@@ -50,6 +87,13 @@ export default function MainRouter() {
       href: '/records',
       icon: HiChartBar,
       color: 'amber',
+    },
+    {
+      title: 'Staff Control',
+      description: 'Manage buyer verification access codes',
+      href: '/admin/access-codes',
+      icon: HiKey,
+      color: 'cyan',
     },
   ]
 
@@ -90,6 +134,50 @@ export default function MainRouter() {
                 </div>
               )
             })}
+          </div>
+        </section>
+
+        {/* Access Code Statistics */}
+        <section className="mb-12">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl font-semibold text-neutral-200">Access Code Statistics</h2>
+            <Link
+              href="/admin/access-codes"
+              className="text-sm text-cyan-400 hover:text-cyan-300 transition flex items-center gap-1"
+            >
+              View All
+              <HiChevronRight className="w-4 h-4" />
+            </Link>
+          </div>
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-4 lg:gap-6">
+            <div className="rounded-2xl bg-neutral-900/80 p-6 shadow-lg ring-1 ring-cyan-500/30 backdrop-blur transition hover:ring-cyan-500/50">
+              <HiKey className="mb-3 text-4xl text-cyan-400" />
+              <div className="text-3xl font-bold text-cyan-400 mb-1">
+                {accessCodeStats.loading ? '...' : accessCodeStats.total}
+              </div>
+              <div className="text-sm text-neutral-400">Total Codes</div>
+            </div>
+            <div className="rounded-2xl bg-neutral-900/80 p-6 shadow-lg ring-1 ring-emerald-500/30 backdrop-blur transition hover:ring-emerald-500/50">
+              <HiCheckCircle className="mb-3 text-4xl text-emerald-400" />
+              <div className="text-3xl font-bold text-emerald-400 mb-1">
+                {accessCodeStats.loading ? '...' : accessCodeStats.active}
+              </div>
+              <div className="text-sm text-neutral-400">Active Codes</div>
+            </div>
+            <div className="rounded-2xl bg-neutral-900/80 p-6 shadow-lg ring-1 ring-neutral-700/30 backdrop-blur transition hover:ring-neutral-500/50">
+              <HiClock className="mb-3 text-4xl text-neutral-400" />
+              <div className="text-3xl font-bold text-neutral-400 mb-1">
+                {accessCodeStats.loading ? '...' : accessCodeStats.expired}
+              </div>
+              <div className="text-sm text-neutral-400">Expired Codes</div>
+            </div>
+            <div className="rounded-2xl bg-neutral-900/80 p-6 shadow-lg ring-1 ring-purple-500/30 backdrop-blur transition hover:ring-purple-500/50">
+              <HiClipboardList className="mb-3 text-4xl text-purple-400" />
+              <div className="text-3xl font-bold text-purple-400 mb-1">
+                {accessCodeStats.loading ? '...' : accessCodeStats.totalUsage}
+              </div>
+              <div className="text-sm text-neutral-400">Total Uses</div>
+            </div>
           </div>
         </section>
 

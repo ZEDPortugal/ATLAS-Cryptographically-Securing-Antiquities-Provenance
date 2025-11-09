@@ -49,6 +49,9 @@ function sql(strings, ...values) {
   }
 }
 
+// Export the sql helper so other modules can use the same serverless-friendly client in production
+export { sql };
+
 export async function initializeDatabase() {
   try {
     // Create users table if it doesn't exist
@@ -70,7 +73,11 @@ export async function initializeDatabase() {
         name VARCHAR(500) NOT NULL,
         description TEXT,
         images JSONB NOT NULL,
-        created_at BIGINT NOT NULL
+        created_at BIGINT NOT NULL,
+        combined_hash VARCHAR(128),
+        image_phash VARCHAR(128),
+        text_sig TEXT,
+        provenance_digest VARCHAR(128)
       )
     `;
     
@@ -92,6 +99,20 @@ export async function initializeDatabase() {
     await sql`
       CREATE INDEX IF NOT EXISTS idx_artifact_hash ON blockchain(artifact_hash)
     `;
+
+    // Access codes table
+    await sql`
+      CREATE TABLE IF NOT EXISTS access_codes (
+        code VARCHAR(16) PRIMARY KEY,
+        created_at BIGINT NOT NULL,
+        expires_at BIGINT NOT NULL,
+        created_by VARCHAR(255) NOT NULL,
+        usage_count INTEGER NOT NULL DEFAULT 0,
+        last_used BIGINT,
+        deleted BOOLEAN NOT NULL DEFAULT FALSE
+      )
+    `;
+    await sql`CREATE INDEX IF NOT EXISTS idx_access_codes_expires ON access_codes(expires_at)`;
     
     console.log('Database initialized successfully');
   } catch (error) {
@@ -133,13 +154,17 @@ export async function getAllUsers() {
 
 export async function saveArtifact(hash, artifact) {
   await sql`
-    INSERT INTO artifacts (hash, name, description, images, created_at)
-    VALUES (${hash}, ${artifact.name}, ${artifact.description || ''}, ${JSON.stringify(artifact.images)}, ${artifact.createdAt})
+    INSERT INTO artifacts (hash, name, description, images, created_at, combined_hash, image_phash, text_sig, provenance_digest)
+    VALUES (${hash}, ${artifact.name}, ${artifact.description || ''}, ${JSON.stringify(artifact.images)}, ${artifact.createdAt}, ${artifact.combinedHash || null}, ${artifact.imagePhash || null}, ${artifact.textSig || null}, ${artifact.provenanceDigest || null})
     ON CONFLICT (hash) DO UPDATE SET
       name = EXCLUDED.name,
       description = EXCLUDED.description,
       images = EXCLUDED.images,
-      created_at = EXCLUDED.created_at
+      created_at = EXCLUDED.created_at,
+      combined_hash = COALESCE(EXCLUDED.combined_hash, artifacts.combined_hash),
+      image_phash = COALESCE(EXCLUDED.image_phash, artifacts.image_phash),
+      text_sig = COALESCE(EXCLUDED.text_sig, artifacts.text_sig),
+      provenance_digest = COALESCE(EXCLUDED.provenance_digest, artifacts.provenance_digest)
   `;
   return { ...artifact, hash };
 }
@@ -157,6 +182,10 @@ export async function getArtifact(hash) {
     description: row.description,
     images: row.images,
     createdAt: row.created_at,
+    combinedHash: row.combined_hash,
+    imagePhash: row.image_phash,
+    textSig: row.text_sig,
+    provenanceDigest: row.provenance_digest,
   };
 }
 

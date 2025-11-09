@@ -1,0 +1,11 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "git-push-atlas",
+			"type": "shell",
+			"command": "git add -A; git commit -m \"feat: access codes to Postgres, multi-modal hash, metrics endpoint, CI, and docs\"; git push -u origin HEAD",
+			"problemMatcher": []
+		}
+	]
+}

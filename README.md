@@ -1,36 +1,145 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+<h1 align="center">ATLAS – Cryptographically Securing Antiquities Provenance</h1>
 
-## Getting Started
+ATLAS is a permissioned provenance and verification system for artifacts. It combines multi‑modal hashing (image, text, provenance), a planned Hyperledger Fabric ledger, and PostgreSQL (Neon) off‑chain storage to allow secure registration, verification, and controlled buyer access via time‑limited codes.
 
-First, run the development server:
+## Quick Start
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run db:init   # create tables (idempotent)
+npm run dev       # start Next.js dev server
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Visit http://localhost:3000
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+| Page | Purpose |
+|------|---------|
+| /login | User login (hash or QR) |
+| /dev-register | Developer-only user creation |
+| /admin/access-codes | Staff control: generate & manage buyer access codes |
+| /register | Artifact registration |
+| /verify-secure | Buyer verification portal (access code gated) |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Software Stack (Current & Planned)
 
-## Learn More
+**Frontend & API**: Next.js 16 (App Router), React 19, Tailwind CSS v4
+**Off-Chain DB**: PostgreSQL (Neon capable) via `pg` / `@vercel/postgres`
+**Access Control**: Local session + time-limited access codes (Fabric CA planned for staff identities)
+**Hashing (prototype)**: SHA3‑512 composite from image/text/provenance components
+**Blockchain (planned)**: Hyperledger Fabric 2.5.x (Raft), chaincode (Node.js)
+**Optional Media**: IPFS (future) for large images & certificate PDFs
+**Metrics**: prom-client `/api/metrics` endpoint (Grafana/Prometheus planned)
+**CI/CD**: GitHub Actions (lint + build) – see `.github/workflows/ci.yml`
+**Security**: CodeQL (planned), access code expiration, HMAC challenges for registration
 
-To learn more about Next.js, take a look at the following resources:
+## Multi-Modal Hash (Prototype)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Computed in `src/lib/hash.js`:
+```
+image_phash      = sha3-256(concat(normalized base64 views))
+text_sig         = top frequency tokens (normalized) joined by '|'
+provenance_digest= sha3-256(JSON(provenance))
+combined_hash    = sha3-512(image_phash|text_sig|provenance_digest)
+```
+Stored columns: `combined_hash`, `image_phash`, `text_sig`, `provenance_digest` in `artifacts`.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Access Codes (Now DB-backed)
 
-## Deploy on Vercel
+PostgreSQL table `access_codes` replaces JSON file storage. API routes:
+- `POST /api/access-codes/generate` – create code
+- `GET /api/access-codes/list` – list codes (staff)
+- `POST /api/access-codes/validate` – validate & increment usage
+- `DELETE /api/access-codes/validate` – delete code
+- `DELETE /api/access-codes/list` – cleanup expired
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Data Flow Diagrams
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Level 0 (Context)
+```mermaid
+graph LR
+	Admin[System Administrator]:::ext
+	Curator[Museum Curator]:::ext
+	Buyer[Collector / Buyer]:::ext
+	CA[Hyperledger Fabric CA]:::ext
+	Monitor[Explorer / Monitoring]:::ext
+	ATLAS[(ATLAS System)]:::sys
+	Admin -- Manage users / configs --> ATLAS
+	Curator -- Artifact data --> ATLAS
+	Buyer -- Verify artifact --> ATLAS
+	ATLAS -- Verification results --> Buyer
+	ATLAS -- Registration feedback --> Curator
+	ATLAS -- Enrollment ops --> CA
+	CA -- Certificates --> ATLAS
+	ATLAS -- Ledger/metrics feed --> Monitor
+	classDef ext fill:#0f172a,stroke:#6366f1,stroke-width:1,color:#e0e7ff,stroke-dasharray:3 3;
+	classDef sys fill:#111827,stroke:#10b981,stroke-width:1,color:#e5e7eb;
+```
+
+### Level 1 (Internal)
+```mermaid
+graph LR
+	classDef proc fill:#0f172a,stroke:#10b981,stroke-width:1,color:#e2e8f0;
+	classDef store fill:#1e293b,stroke:#64748b,stroke-width:1,color:#cbd5e1;
+	classDef ext fill:#0f172a,stroke:#6366f1,stroke-width:1,color:#e0e7ff,stroke-dasharray:3 3;
+	Admin[System Admin]:::ext
+	Curator[Museum Curator]:::ext
+	Buyer[Collector / Buyer]:::ext
+	CA[Fabric CA]:::ext
+	Monitor[Explorer / Monitoring]:::ext
+	P1[Auth & Session\n(Access Codes + RBAC planned)]:::proc
+	P2[Artifact Registration]:::proc
+	P3[Multi-Modal Hash Engine]:::proc
+	P4[Provenance Recording (Fabric planned)]:::proc
+	P5[Integrity Validation]:::proc
+	P6[Verification & Certificates]:::proc
+	P7[Off-Chain Data (Postgres/IPFS)]:::proc
+	P8[Audit & Monitoring]:::proc
+	D1[(Users & Roles\nPostgreSQL)]:::store
+	D2[(Artifacts + Hashes\nPostgreSQL)]:::store
+	D3[(Images / Certs\nIPFS optional)]:::store
+	D4[(Hash Index\nFabric World State)]:::store
+	D5[(Provenance Records\nFabric Ledger)]:::store
+	D6[(Audit Logs / Events)]:::store
+	D7[(Hash Components Archive)]:::store
+	Admin --> P1
+	Curator --> P1
+	Buyer --> P1
+	P1 --> D1
+	P1 --> P2
+	P2 --> P3
+	P2 --> D2
+	P2 --> P7
+	P3 --> D7
+	P3 --> P4
+	P4 --> D5
+	P4 --> D4
+	P4 --> D6
+	Buyer --> P6
+	P6 --> D2
+	P6 --> P5
+	P5 --> D5
+	P5 --> D4
+	P5 --> D7
+	P5 --> D6
+	P6 --> Buyer
+	P7 --> D3
+	D5 --> P8
+	D6 --> P8
+	P8 --> Monitor
+	P1 --> CA
+	CA --> P1
+```
+
+## Roadmap (Next Milestones)
+1. Fabric dev network & chaincode (register / transfer / provenance query)
+2. Staff identity via Fabric CA (replace simulated blockchain table)
+3. IPFS integration for large media (CID recorded on-chain)
+4. Verification integrity PASS/FAIL based on ledger vs recompute
+5. Metrics dashboards (Grafana) & structured logs
+
+## Contributing
+Pull requests welcome. Ensure lint passes & include minimal tests for new modules.
+
+## License
+Proprietary (pending final license selection). Contact maintainers for usage inquiries.
+

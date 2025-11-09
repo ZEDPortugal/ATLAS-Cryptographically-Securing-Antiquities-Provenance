@@ -32,7 +32,7 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     // Redirect to login if not authenticated and not on public pages
-    const publicPages = ["/login", "/dev-register", "/dev-register/qr"];
+    const publicPages = ["/login", "/dev-register", "/dev-register/qr", "/verify-secure"];
     const isPublicPage = publicPages.some(page => pathname.startsWith(page));
     
     if (!loading && !user && !isPublicPage) {
