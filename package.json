@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --webpack",
-    "build": "next build --webpack",
+    "build": "node scripts/migrate-db.js && next build --webpack",
     "start": "next start",
     "lint": "eslint",
     "db:init": "node scripts/init-db.js"
