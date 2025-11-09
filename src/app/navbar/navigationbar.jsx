@@ -124,7 +124,16 @@ export default function NavigationBar() {
 					aria-label="Primary navigation"
 					className="flex-1 flex justify-center"
 				>
-					<ul className="flex items-center gap-2 rounded-full bg-neutral-900/80 px-6 py-3 shadow-lg shadow-black/50 ring-1 ring-neutral-700/50 backdrop-blur">
+					<ul className="relative flex items-center gap-2 rounded-full bg-neutral-900/80 px-6 py-3 shadow-lg shadow-black/50 ring-1 ring-neutral-700/50 backdrop-blur">
+						<span
+							ref={indicatorRef}
+							style={{
+								width: `${indicatorStyle.width}px`,
+								left: `${indicatorStyle.left}px`,
+								opacity: indicatorStyle.opacity,
+							}}
+							className="pointer-events-none absolute bottom-1.5 h-1 rounded-full bg-emerald-400 transition-all duration-300 ease-out"
+						/>
 						{links.map((link) => {
 							const active = isActive(pathname, link.href);
 							const baseClasses = "px-4 py-2 text-xs font-semibold uppercase tracking-[0.3em] transition-colors duration-200 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-emerald-400";
@@ -136,6 +145,13 @@ export default function NavigationBar() {
 									<Link
 										href={link.href}
 										aria-current={active ? "page" : undefined}
+										ref={(element) => {
+											if (!element) {
+												linkRefs.current.delete(link.href);
+												return;
+											}
+											linkRefs.current.set(link.href, element);
+										}}
 										className={classNames(baseClasses, active ? activeClasses : inactiveClasses)}
 									>
 										{link.label}
