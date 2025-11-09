@@ -111,39 +111,7 @@ export default function NavigationBar() {
 
 	return (
 		<>
-			<header className="flex shrink-0 items-center justify-between px-4 pt-6 pb-4 md:justify-center md:pt-10 md:pb-6">
-				<button
-					type="button"
-					onClick={toggleMenu}
-					aria-label="Toggle navigation"
-					aria-expanded={menuOpen}
-					className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-neutral-700 bg-neutral-900/80 text-neutral-200 shadow-lg shadow-black/40 transition hover:border-emerald-400 hover:text-emerald-200 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-emerald-400 md:hidden"
-				>
-					<span className="sr-only">Toggle navigation</span>
-					<span className="relative block h-5 w-6">
-						<span
-							aria-hidden="true"
-							className={classNames(
-								"absolute left-0 h-0.5 w-6 transform transition-all duration-200 ease-in-out",
-								menuOpen ? "top-2.5 rotate-45 bg-emerald-400" : "top-1 bg-neutral-200"
-							)}
-						/>
-						<span
-							aria-hidden="true"
-							className={classNames(
-								"absolute left-0 h-0.5 w-6 transform transition-all duration-200 ease-in-out",
-								menuOpen ? "top-2.5 -rotate-45 bg-emerald-400" : "top-2.5 bg-neutral-200"
-							)}
-						/>
-						<span
-							aria-hidden="true"
-							className={classNames(
-								"absolute left-0 h-0.5 w-6 transform transition-all duration-200 ease-in-out",
-								menuOpen ? "top-2.5 rotate-45 opacity-0" : "top-4 bg-neutral-200"
-							)}
-						/>
-					</span>
-				</button>
+			<header className="flex shrink-0 items-center justify-center px-4 pt-6 pb-4 md:pt-10 md:pb-6">
 				<nav
 					aria-label="Primary navigation"
 					className="hidden rounded-full bg-neutral-900/80 px-6 py-2 shadow-lg shadow-black/50 ring-1 ring-neutral-700/50 backdrop-blur md:block"
@@ -194,6 +162,40 @@ export default function NavigationBar() {
 					</ul>
 				</nav>
 			</header>
+
+			{/* Floating Burger Menu Button */}
+			<button
+				type="button"
+				onClick={toggleMenu}
+				aria-label="Toggle navigation"
+				aria-expanded={menuOpen}
+				className="fixed bottom-6 right-6 z-50 inline-flex h-14 w-14 items-center justify-center rounded-full border border-neutral-700 bg-neutral-900/95 text-neutral-200 shadow-xl shadow-black/60 backdrop-blur-md transition-all duration-200 hover:border-emerald-400 hover:text-emerald-200 hover:scale-110 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-emerald-400 md:hidden"
+			>
+				<span className="sr-only">Toggle navigation</span>
+				<span className="relative block h-5 w-6">
+					<span
+						aria-hidden="true"
+						className={classNames(
+							"absolute left-0 h-0.5 w-6 transform transition-all duration-200 ease-in-out",
+							menuOpen ? "top-2.5 rotate-45 bg-emerald-400" : "top-1 bg-neutral-200"
+						)}
+					/>
+					<span
+						aria-hidden="true"
+						className={classNames(
+							"absolute left-0 h-0.5 w-6 transform transition-all duration-200 ease-in-out",
+							menuOpen ? "top-2.5 -rotate-45 bg-emerald-400" : "top-2.5 bg-neutral-200"
+						)}
+					/>
+					<span
+						aria-hidden="true"
+						className={classNames(
+							"absolute left-0 h-0.5 w-6 transform transition-all duration-200 ease-in-out",
+							menuOpen ? "top-2.5 rotate-45 opacity-0" : "top-4 bg-neutral-200"
+						)}
+					/>
+				</span>
+			</button>
 
 			<nav
 				aria-label="Mobile navigation"
