@@ -111,56 +111,52 @@ export default function NavigationBar() {
 
 	return (
 		<>
-			<header className="flex shrink-0 items-center justify-center px-4 pt-6 pb-4 md:pt-10 md:pb-6">
-				<nav
-					aria-label="Primary navigation"
-					className="hidden rounded-full bg-neutral-900/80 px-6 py-2 shadow-lg shadow-black/50 ring-1 ring-neutral-700/50 backdrop-blur md:block"
-				>
-					<ul className="relative flex flex-wrap items-center justify-center gap-6 text-xs uppercase tracking-[0.35em]">
-						<span
-							ref={indicatorRef}
-							style={{
-								width: `${indicatorStyle.width}px`,
-								left: `${indicatorStyle.left}px`,
-								opacity: indicatorStyle.opacity,
-							}}
-							className="pointer-events-none absolute bottom-1.5 h-1 rounded-full bg-emerald-400 transition-all duration-300 ease-out"
-						/>
-						{links.map((link) => {
-							const active = isActive(pathname, link.href);
-							const baseClasses = "flex h-10 items-center justify-center px-4 font-semibold transition-colors duration-200 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-emerald-400";
-							const activeClasses = "text-emerald-400";
-							const inactiveClasses = "text-neutral-300 hover:text-emerald-200";
+			<header className="sticky top-0 z-40 w-full border-b border-neutral-800/50 bg-neutral-950/95 backdrop-blur-md">
+				<div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
+					{/* Logo */}
+					<Link href="/" className="flex items-center gap-2">
+						<div className="flex h-10 items-center rounded-full bg-emerald-400/10 px-4 ring-1 ring-emerald-400/20">
+							<span className="text-lg font-bold tracking-wider text-emerald-400">ATLAS</span>
+						</div>
+					</Link>
 
-							return (
-								<li key={link.href}>
-									<Link
-										href={link.href}
-										aria-current={active ? "page" : undefined}
-										ref={(element) => {
-											if (!element) {
-												linkRefs.current.delete(link.href);
-												return;
-											}
-											linkRefs.current.set(link.href, element);
-										}}
-										className={classNames(baseClasses, active ? activeClasses : inactiveClasses)}
-									>
-										{link.label}
-									</Link>
-								</li>
-							);
-						})}
-						<li className="ml-2 flex items-center gap-3">
-							<button
-								onClick={logout}
-								className="flex h-10 items-center justify-center px-4 font-semibold text-red-400 transition-colors duration-200 hover:text-red-300 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-red-400"
-							>
-								Logout
-							</button>
-						</li>
-					</ul>
-				</nav>
+					{/* Desktop Navigation - Center */}
+					<nav aria-label="Primary navigation" className="hidden md:block">
+						<ul className="flex items-center gap-1">
+							{links.map((link) => {
+								const active = isActive(pathname, link.href);
+								const baseClasses = "relative px-4 py-2 text-sm font-semibold uppercase tracking-wider transition-colors duration-200 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-emerald-400";
+								const activeClasses = "text-emerald-400";
+								const inactiveClasses = "text-neutral-400 hover:text-emerald-300";
+
+								return (
+									<li key={link.href}>
+										<Link
+											href={link.href}
+											aria-current={active ? "page" : undefined}
+											className={classNames(baseClasses, active ? activeClasses : inactiveClasses)}
+										>
+											{link.label}
+											{active && (
+												<span className="absolute bottom-0 left-0 right-0 h-0.5 bg-emerald-400"></span>
+											)}
+										</Link>
+									</li>
+								);
+							})}
+						</ul>
+					</nav>
+
+					{/* Logout Button - Right */}
+					<div className="hidden md:block">
+						<button
+							onClick={logout}
+							className="rounded-full bg-red-500/10 px-6 py-2 text-sm font-semibold uppercase tracking-wider text-red-400 ring-1 ring-red-500/20 transition-all duration-200 hover:bg-red-500/20 hover:ring-red-500/40 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-red-400"
+						>
+							Logout
+						</button>
+					</div>
+				</div>
 			</header>
 
 			{/* Floating Burger Menu Button */}
