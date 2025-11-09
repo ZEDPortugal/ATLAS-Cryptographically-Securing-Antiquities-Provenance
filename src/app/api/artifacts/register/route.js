@@ -22,9 +22,6 @@ export async function POST(req) {
   const hash = mm.combined_hash
 
   try {
-    // Initialize database (safe to call multiple times)
-    await initializeDatabase()
-    
     // Save artifact FIRST (before blockchain entry due to foreign key constraint)
     await saveArtifact(hash, {
       name: art.name,
