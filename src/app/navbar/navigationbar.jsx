@@ -133,10 +133,10 @@ export default function NavigationBar() {
 							</div>
 						</Link>
 
-						{/* Navigation Links - Center */}
+						{/* Navigation Links - Left on tablet, Center on desktop */}
 						<nav
 							aria-label="Primary navigation"
-							className="flex flex-1 justify-center"
+							className="flex xl:flex-1 xl:justify-center"
 						>
 						<ul className="relative flex items-center gap-1.5 rounded-full bg-neutral-900/80 px-3 py-2 shadow-lg shadow-black/50 ring-1 ring-neutral-700/50 backdrop-blur dark:bg-neutral-900/80 light:bg-neutral-100/80 light:ring-neutral-300/50 lg:gap-2 lg:px-4 xl:px-6 xl:py-3">
 							<span
