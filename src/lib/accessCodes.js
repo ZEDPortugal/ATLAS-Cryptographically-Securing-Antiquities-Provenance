@@ -13,7 +13,6 @@ function generateCode() {
 }
 
 export async function createAccessCode(expirationHours = 48, createdBy = 'staff') {
-  await initializeDatabase();
   const code = generateCode();
   const createdAt = Date.now();
   const expiresAt = createdAt + expirationHours * 60 * 60 * 1000;
@@ -22,7 +21,6 @@ export async function createAccessCode(expirationHours = 48, createdBy = 'staff'
 }
 
 export async function validateAccessCode(code) {
-  await initializeDatabase();
   const upper = code.toUpperCase();
   const now = Date.now();
   const result = await sql`SELECT * FROM access_codes WHERE code = ${upper} AND deleted = FALSE`;
@@ -49,26 +47,23 @@ export async function validateAccessCode(code) {
 }
 
 export async function getAllAccessCodes() {
-  await initializeDatabase();
   const result = await sql`SELECT code, created_at, expires_at, created_by, usage_count, last_used FROM access_codes WHERE deleted = FALSE ORDER BY created_at DESC`;
   return result.rows.map(r => ({
     code: r.code,
-    createdAt: r.created_at,
-    expiresAt: r.expires_at,
+    createdAt: Number(r.created_at),
+    expiresAt: Number(r.expires_at),
     createdBy: r.created_by,
     usageCount: r.usage_count,
-    lastUsed: r.last_used,
+    lastUsed: r.last_used ? Number(r.last_used) : null,
   }));
 }
 
 export async function deleteAccessCode(code) {
-  await initializeDatabase();
   await sql`UPDATE access_codes SET deleted = TRUE WHERE code = ${code.toUpperCase()}`;
   return true;
 }
 
 export async function cleanupExpiredCodes() {
-  await initializeDatabase();
   const now = Date.now();
   const result = await sql`UPDATE access_codes SET deleted = TRUE WHERE expires_at < ${now} AND deleted = FALSE RETURNING code`;
   return result.rowCount; // number marked deleted
