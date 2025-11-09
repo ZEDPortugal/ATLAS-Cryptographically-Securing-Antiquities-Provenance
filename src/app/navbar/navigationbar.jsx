@@ -115,7 +115,7 @@ export default function NavigationBar() {
 				{/* Logo - Left */}
 				<Link href="/" className="flex items-center">
 					<div className="flex h-12 items-center rounded-full bg-neutral-900/80 px-6 shadow-lg shadow-black/50 ring-1 ring-neutral-700/50 backdrop-blur transition-all hover:ring-emerald-400/50">
-						<span className="text-lg font-bold tracking-wider text-emerald-400">ATLAS</span>
+						<span className="text-lg font-bold tracking-wider text-white">ATLAS</span>
 					</div>
 				</Link>
 
@@ -167,7 +167,7 @@ export default function NavigationBar() {
 					onClick={logout}
 					className="flex h-12 items-center rounded-full bg-neutral-900/80 px-6 shadow-lg shadow-black/50 ring-1 ring-neutral-700/50 backdrop-blur transition-all hover:ring-red-500/50"
 				>
-					<span className="text-sm font-semibold uppercase tracking-[0.3em] text-red-400 transition-colors hover:text-red-300">
+					<span className="text-sm uppercase tracking-[0.3em] text-red-400 transition-colors hover:text-red-300">
 						Logout
 					</span>
 				</button>
