@@ -78,7 +78,7 @@ export default function VerifyPage() {
     setResult(null)
     setScanMessage('')
     try {
-      const res = await fetch('/api/artifacts/verify', {
+      const res = await fetch('/api/antiques/verify', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ hash }),

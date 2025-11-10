@@ -91,10 +91,10 @@ function sha3(input) {
 }
 
 export class Block {
-  constructor({ index, timestamp, antiqueHash, owner, previousHash = '' }) {
+  constructor({ index, timestamp, antique_hash, owner, previousHash = '' }) {
     this.index = index;
     this.timestamp = timestamp;
-    this.antiqueHash = antiqueHash;
+    this.antiqueHash = antique_hash;
     this.owner = owner;
     this.previousHash = previousHash;
     this.hash = this.computeHash();

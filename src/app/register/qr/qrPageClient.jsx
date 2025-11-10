@@ -65,7 +65,7 @@ export default function RegisterQrPageClient() {
     setError('')
 
     const fetchArtifact = async (attempt = 1) => {
-      const res = await fetch(`/api/artifacts/${encodeURIComponent(hash)}`, { cache: 'no-store' })
+      const res = await fetch(`/api/antiques/${encodeURIComponent(hash)}`, { cache: 'no-store' })
       if (res.ok) {
         return res.json()
       }

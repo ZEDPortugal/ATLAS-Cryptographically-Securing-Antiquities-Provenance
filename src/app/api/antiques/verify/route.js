@@ -11,7 +11,7 @@ export async function POST(req) {
   try {
     const found = await findByHash(hash)
     if (found) {
-      const artifact = await getArtifact(hash)
+      const artifact = await getAntique(hash)
       return NextResponse.json({ status: 'found', block: found, artifact })
     }
     return NextResponse.json({ status: 'not_found' })
