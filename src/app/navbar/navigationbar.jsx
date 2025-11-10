@@ -119,8 +119,8 @@ export default function NavigationBar() {
 					{/* Logo - Top on tablet/iPad, Left on large desktop */}
 					<div className="flex items-center justify-center xl:hidden mb-4">
 						<Link href="/" className="flex items-center">
-							<div className="flex h-10 items-center rounded-full bg-neutral-900/80 px-4 shadow-lg shadow-black/50 ring-1 ring-neutral-700/50 backdrop-blur transition-all hover:ring-emerald-400/50 dark:bg-neutral-900/80 light:bg-neutral-100/80 light:ring-neutral-300/50 lg:h-11 lg:px-5">
-								<span className="font-golosText text-base font-bold tracking-wider text-white dark:text-white light:text-neutral-900 lg:text-[1.05rem]">A T L A S</span>
+							<div className="flex h-10 items-center rounded-full bg-neutral-900/80 px-4 shadow-lg ring-1 ring-neutral-700/50 backdrop-blur transition-all hover:ring-emerald-400/50 lg:h-11 lg:px-5">
+								<span className="font-golosText text-base font-bold tracking-wider lg:text-[1.05rem]">A T L A S</span>
 							</div>
 						</Link>
 					</div>
@@ -129,8 +129,8 @@ export default function NavigationBar() {
 					<div className="flex items-center justify-between gap-3 lg:gap-4">
 						{/* Logo for Large Desktop */}
 						<Link href="/" className="hidden xl:flex items-center">
-							<div className="flex h-12 items-center rounded-full bg-neutral-900/80 px-6 shadow-lg shadow-black/50 ring-1 ring-neutral-700/50 backdrop-blur transition-all hover:ring-emerald-400/50 dark:bg-neutral-900/80 light:bg-neutral-100/80 light:ring-neutral-300/50">
-								<span className="font-golosText text-lg font-bold tracking-wider text-white dark:text-white light:text-neutral-900">A T L A S</span>
+							<div className="flex h-12 items-center rounded-full bg-neutral-900/80 px-6 shadow-lg ring-1 ring-neutral-700/50 backdrop-blur transition-all hover:ring-emerald-400/50">
+								<span className="font-golosText text-lg font-bold tracking-wider">A T L A S</span>
 							</div>
 						</Link>
 
@@ -139,7 +139,7 @@ export default function NavigationBar() {
 							aria-label="Primary navigation"
 							className="flex xl:flex-1 xl:justify-center"
 						>
-						<ul className="relative flex items-center gap-1.5 rounded-full bg-neutral-900/80 px-3 py-2 shadow-lg shadow-black/50 ring-1 ring-neutral-700/50 backdrop-blur dark:bg-neutral-900/80 light:bg-neutral-100/80 light:ring-neutral-300/50 lg:gap-2 lg:px-4 xl:px-6 xl:py-3">
+						<ul className="relative flex items-center gap-1.5 rounded-full bg-neutral-900/80 px-3 py-2 shadow-lg ring-1 ring-neutral-700/50 backdrop-blur lg:gap-2 lg:px-4 xl:px-6 xl:py-3">
 							<span
 								ref={indicatorRef}
 								style={{
@@ -153,7 +153,7 @@ export default function NavigationBar() {
 								const active = isActive(pathname, link.href);
 								const baseClasses = "font-golosText px-2.5 py-1.5 text-[0.6rem] font-semibold uppercase tracking-[0.2em] transition-colors duration-200 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-emerald-400 lg:px-3 lg:text-[0.65rem] lg:tracking-[0.25em] xl:px-4 xl:py-2 xl:text-xs xl:tracking-[0.3em]";
 								const activeClasses = "text-emerald-400";
-								const inactiveClasses = "text-neutral-300 hover:text-emerald-200 dark:text-neutral-300 light:text-neutral-600 light:hover:text-emerald-500";
+								const inactiveClasses = "text-neutral-400 hover:text-emerald-300";
 
 								return (
 									<li key={link.href}>
@@ -181,9 +181,9 @@ export default function NavigationBar() {
 					<div className="flex items-center gap-3">
 						<button
 							onClick={logout}
-							className="flex h-10 items-center rounded-full bg-neutral-900/80 px-3 shadow-lg shadow-black/50 ring-1 ring-neutral-700/50 backdrop-blur transition-all hover:ring-red-500/50 dark:bg-neutral-900/80 light:bg-neutral-100/80 light:ring-neutral-300/50 lg:h-11 lg:px-4 xl:h-12 xl:px-6"
+							className="flex h-10 items-center rounded-full bg-neutral-900/80 px-3 shadow-lg ring-1 ring-neutral-700/50 backdrop-blur transition-all hover:ring-red-500/50 lg:h-11 lg:px-4 xl:h-12 xl:px-6"
 						>
-							<span className="font-golosText text-[0.65rem] uppercase tracking-[0.25em] text-red-400 transition-colors hover:text-red-300 light:text-red-500 light:hover:text-red-600 lg:text-xs lg:tracking-[0.28em] xl:text-sm xl:tracking-[0.3em]">
+							<span className="font-golosText text-[0.65rem] uppercase tracking-[0.25em] text-red-400 transition-colors hover:text-red-300 lg:text-xs lg:tracking-[0.28em] xl:text-sm xl:tracking-[0.3em]">
 								Logout
 							</span>
 						</button>
@@ -194,8 +194,8 @@ export default function NavigationBar() {
 				{/* Mobile Logo Only */}
 				<div className="flex md:hidden items-center justify-center">
 					<Link href="/" className="flex items-center">
-						<div className="flex h-10 items-center rounded-full bg-neutral-900/80 px-4 shadow-lg shadow-black/50 ring-1 ring-neutral-700/50 backdrop-blur transition-all hover:ring-emerald-400/50 dark:bg-neutral-900/80 light:bg-neutral-100/80 light:ring-neutral-300/50">
-							<span className="font-golosText text-base font-bold tracking-wider text-white dark:text-white light:text-neutral-900">A T L A S</span>
+						<div className="flex h-10 items-center rounded-full bg-neutral-900/80 px-4 shadow-lg ring-1 ring-neutral-700/50 backdrop-blur transition-all hover:ring-emerald-400/50">
+							<span className="font-golosText text-base font-bold tracking-wider">A T L A S</span>
 						</div>
 					</Link>
 				</div>

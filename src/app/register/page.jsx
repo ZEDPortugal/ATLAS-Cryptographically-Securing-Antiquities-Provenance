@@ -175,7 +175,7 @@ export default function RegisterPage() {
       <div key={key}>
         <label
           htmlFor={inputId}
-          className={`group relative flex cursor-pointer flex-col items-center justify-center rounded-3xl border-2 border-dashed border-neutral-700 dark:border-neutral-700 light:border-neutral-300 p-8 text-center shadow-sm transition hover:border-emerald-400 hover:bg-emerald-400/10 ${containerClass}`}
+          className={`group relative flex cursor-pointer flex-col items-center justify-center rounded-3xl border-2 border-dashed border-neutral-700 p-8 text-center shadow-sm transition hover:border-emerald-400 hover:bg-emerald-400/10 ${containerClass}`}
         >
           {preview ? (
             <img
@@ -184,7 +184,7 @@ export default function RegisterPage() {
               className={`rounded-2xl object-cover shadow-sm ${previewClass}`}
             />
           ) : (
-            <div className="flex h-full w-full flex-col items-center justify-center gap-4 text-sm text-neutral-300 dark:text-neutral-300 light:text-neutral-700">
+            <div className="flex h-full w-full flex-col items-center justify-center gap-4 text-sm text-neutral-400">
               <div className="flex h-16 w-16 items-center justify-center">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -198,7 +198,7 @@ export default function RegisterPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M4 20h16" />
                 </svg>
               </div>
-              <div className="text-base font-semibold uppercase tracking-wider text-neutral-200 dark:text-neutral-200 light:text-neutral-800">{label}</div>
+              <div className="text-base font-semibold uppercase tracking-wider">{label}</div>
             </div>
           )}
         </label>
@@ -241,9 +241,9 @@ export default function RegisterPage() {
 
             <div className="flex flex-col gap-6">
               <div className="flex flex-col gap-2">
-                <label className="text-sm uppercase tracking-wide text-neutral-200 dark:text-neutral-200 light:text-neutral-800">Name</label>
+                <label className="text-sm uppercase tracking-wide">Name</label>
                 <input
-                  className="w-full rounded-xl border border-neutral-700 dark:border-neutral-700 light:border-neutral-300 bg-neutral-950/80 dark:bg-neutral-950/80 light:bg-neutral-100/80 px-4 py-3 text-sm text-neutral-100 dark:text-neutral-100 light:text-neutral-900 outline-none transition focus:border-emerald-400"
+                  className="w-full rounded-xl border border-neutral-700 bg-neutral-950/80 px-4 py-3 text-sm outline-none transition focus:border-emerald-400"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   required
@@ -252,9 +252,9 @@ export default function RegisterPage() {
               </div>
 
               <div className="flex flex-col gap-2">
-                <label className="text-sm uppercase tracking-wide text-neutral-200 dark:text-neutral-200 light:text-neutral-800">Description</label>
+                <label className="text-sm uppercase tracking-wide">Description</label>
                 <textarea
-                  className="h-[300px] w-full rounded-xl border border-neutral-700 dark:border-neutral-700 light:border-neutral-300 bg-neutral-950/80 dark:bg-neutral-950/80 light:bg-neutral-100/80 px-4 py-3 text-sm text-neutral-100 dark:text-neutral-100 light:text-neutral-900 outline-none transition focus:border-emerald-400"
+                  className="h-[300px] w-full rounded-xl border border-neutral-700 bg-neutral-950/80 px-4 py-3 text-sm outline-none transition focus:border-emerald-400"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   placeholder="Provide provenance, notable markings, materials, and any verification details."
@@ -270,7 +270,7 @@ export default function RegisterPage() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full rounded-full bg-emerald-500 px-10 py-3 text-sm font-semibold uppercase tracking-wider  transition hover:bg-emerald-400 disabled:cursor-not-allowed disabled:opacity-60 md:w-auto"
+              className="w-full rounded-full bg-emerald-500 px-10 py-3 text-sm font-semibold uppercase tracking-wider text-white transition hover:bg-emerald-400 disabled:cursor-not-allowed disabled:opacity-60 md:w-auto"
             >
               {isSubmitting ? 'Opening preview...' : 'Next'}
             </button>
@@ -278,7 +278,7 @@ export default function RegisterPage() {
         </form>
 
         {message ? (
-          <div className="mt-6 rounded-xl border border-neutral-700 bg-neutral-900/80 px-4 py-3 text-sm text-neutral-100">
+          <div className="mt-6 rounded-xl border border-neutral-700 bg-neutral-900/80 px-4 py-3 text-sm">
             {message}
           </div>
         ) : null}

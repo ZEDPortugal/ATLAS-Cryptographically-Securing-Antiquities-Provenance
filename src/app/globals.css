@@ -198,16 +198,47 @@ p, label, span, div, a, button, input, textarea, select {
   background-color: var(--input-bg) !important;
 }
 
+/* Additional light mode specific overrides */
+:root.light .bg-neutral-900\/70 {
+  background-color: rgba(248, 247, 245, 0.75) !important;
+}
+
+:root.light .bg-neutral-900\/60 {
+  background-color: rgba(245, 244, 242, 0.65) !important;
+}
+
+:root.light .bg-neutral-900\/80 {
+  background-color: rgba(248, 247, 245, 0.85) !important;
+}
+
+:root.light .bg-neutral-900\/95 {
+  background-color: rgba(248, 247, 245, 0.92) !important;
+}
+
+:root.light .bg-neutral-950\/80 {
+  background-color: rgba(232, 230, 227, 0.9) !important;
+}
+
+:root.light .bg-neutral-950\/60 {
+  background-color: rgba(232, 230, 227, 0.75) !important;
+}
+
 /* Input backgrounds that adapt to theme */
 input.bg-neutral-800,
 textarea.bg-neutral-800,
-select.bg-neutral-800 {
+select.bg-neutral-800,
+input[class*="bg-neutral-800"],
+textarea[class*="bg-neutral-800"],
+select[class*="bg-neutral-800"] {
   background-color: var(--input-bg) !important;
 }
 
 :root.light input.bg-neutral-800,
 :root.light textarea.bg-neutral-800,
-:root.light select.bg-neutral-800 {
+:root.light select.bg-neutral-800,
+:root.light input[class*="bg-neutral-800"],
+:root.light textarea[class*="bg-neutral-800"],
+:root.light select[class*="bg-neutral-800"] {
   background-color: rgba(232, 230, 227, 0.9) !important;
 }
 
@@ -330,6 +361,86 @@ button.text-neutral-400,
 button[class*="text-red-"],
 button[class*="text-emerald-"] {
   color: inherit !important;
+}
+
+/* Ensure labels and headings adapt to theme */
+label, h1, h2, h3, h4, h5, h6 {
+  color: var(--foreground);
+}
+
+:root.light label,
+:root.light h1,
+:root.light h2,
+:root.light h3,
+:root.light h4,
+:root.light h5,
+:root.light h6 {
+  color: var(--neutral-900);
+}
+
+/* Buttons with emerald/red backgrounds should always have white text */
+button.bg-emerald-500,
+button.bg-emerald-600,
+button.bg-red-500,
+button.bg-red-600 {
+  color: white !important;
+}
+
+/* Theme toggle and navigation components */
+:root.light [class*="bg-neutral-900/"] {
+  background-color: rgba(248, 247, 245, 0.85) !important;
+}
+
+:root.light [class*="ring-neutral-700"] {
+  --tw-ring-color: rgba(191, 188, 184, 0.4) !important;
+}
+
+/* Ensure proper text contrast in cards and containers */
+:root.light .text-neutral-300,
+:root.light .text-neutral-400 {
+  color: var(--neutral-600) !important;
+}
+
+:root.light .text-neutral-500 {
+  color: var(--neutral-500) !important;
+}
+
+/* Border dashed elements for upload areas */
+:root.light .border-dashed.border-neutral-700 {
+  border-color: rgba(158, 155, 151, 0.5) !important;
+}
+
+/* Mobile menu background */
+:root.light nav[aria-label="Mobile navigation"] {
+  background-color: rgba(248, 247, 245, 0.98) !important;
+}
+
+/* Mobile burger button */
+:root.light button[aria-label="Toggle navigation"] {
+  background-color: rgba(248, 247, 245, 0.95) !important;
+  border-color: rgba(158, 155, 151, 0.5) !important;
+}
+
+:root.light button[aria-label="Toggle navigation"] span[aria-hidden="true"] {
+  background-color: var(--neutral-800) !important;
+}
+
+/* Ensure text-neutral colors adapt properly */
+:root.light .text-neutral-200 {
+  color: var(--neutral-800) !important;
+}
+
+:root.light .text-neutral-600 {
+  color: var(--neutral-600) !important;
+}
+
+/* Ensure stat cards and dashboard elements work in light mode */
+:root.light main .text-neutral-100 {
+  color: var(--neutral-900) !important;
+}
+
+:root.light main .text-neutral-200 {
+  color: var(--neutral-800) !important;
 }
 
 

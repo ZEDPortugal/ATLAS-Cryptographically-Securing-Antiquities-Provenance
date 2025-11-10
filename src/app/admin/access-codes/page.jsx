@@ -10,12 +10,37 @@ export default function AccessCodesPage() {
   const [expirationHours, setExpirationHours] = useState(48);
   const [message, setMessage] = useState("");
   const [generatedCode, setGeneratedCode] = useState(null);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [lastUpdate, setLastUpdate] = useState(Date.now());
 
+  // Initial load
   useEffect(() => {
     loadCodes();
   }, []);
 
-  const loadCodes = async () => {
+  // Real-time polling - refresh every 5 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIsRefreshing(true);
+      loadCodes(true); // Silent refresh
+      setLastUpdate(Date.now());
+      setTimeout(() => setIsRefreshing(false), 500);
+    }, 5000); // Poll every 5 seconds
+
+    return () => clearInterval(interval);
+  }, []);
+
+  // Update time remaining counters every minute
+  useEffect(() => {
+    const interval = setInterval(() => {
+      // Force re-render to update time remaining displays
+      setCodes(prevCodes => [...prevCodes]);
+    }, 60000); // Update every minute
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const loadCodes = async (silent = false) => {
     try {
       const res = await fetch("/api/access-codes/list");
       const data = await res.json();
@@ -25,7 +50,9 @@ export default function AccessCodesPage() {
     } catch (err) {
       console.error("Failed to load codes:", err);
     } finally {
-      setLoading(false);
+      if (!silent) {
+        setLoading(false);
+      }
     }
   };
 
@@ -126,12 +153,20 @@ export default function AccessCodesPage() {
       <div className="min-h-screen pb-12 px-4">
         <div className="mx-auto w-full max-w-6xl">
           <div className="mb-8">
-            <h1 className="text-3xl font-semibold uppercase tracking-[0.25em] text-emerald-400">
-              Access Control
-            </h1>
-            <p className="mt-2 text-sm text-neutral-400">
-              Manage verification access for buyers and collectors
-            </p>
+            <div className="flex items-center justify-between">
+              <div>
+                <h1 className="text-3xl font-semibold uppercase tracking-[0.25em] text-emerald-400">
+                  Access Control
+                </h1>
+                <p className="mt-2 text-sm text-neutral-400">
+                  Manage verification access for buyers and collectors
+                </p>
+              </div>
+              <div className="flex items-center gap-2 text-xs text-neutral-500">
+                <div className={`w-2 h-2 rounded-full ${isRefreshing ? 'bg-cyan-400 animate-pulse' : 'bg-neutral-600'}`}></div>
+                <span>Live updates</span>
+              </div>
+            </div>
           </div>
 
           {/* Generate New Code Card */}
@@ -270,11 +305,11 @@ export default function AccessCodesPage() {
                 {codes.map((code) => (
                   <div
                     key={code.code}
-                    className={`rounded-2xl border-2 p-4 transition-all hover:shadow-sm ${
+                    className={`rounded-2xl border-2 p-4 transition-all duration-300 hover:shadow-sm ${
                       isExpired(code.expiresAt)
                         ? "border-neutral-800 bg-neutral-900/70 opacity-60"
                         : "border-neutral-700 bg-neutral-900/70 shadow-sm"
-                    }`}
+                    } ${isRefreshing ? 'scale-[1.01]' : ''}`}
                   >
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                       <div className="flex-1">

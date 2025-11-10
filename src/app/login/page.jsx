@@ -88,13 +88,13 @@ export default function LoginPage() {
           <h1 className="text-4xl font-bold tracking-tight">
             ATLAS
           </h1>
-          <p className="mt-2 text-sm text-neutral-400">
+          <p className="mt-2 text-sm text-neutral-500">
             Cryptographically Securing Antiquities Provenance
           </p>
         </div>
 
         <form onSubmit={handleSubmit} className="mt-8 space-y-6">
-          <div className="space-y-4 rounded-2xl bg-neutral-900/80 p-8 shadow-lg shadow-black/50 ring-1 ring-neutral-700/50">
+          <div className="space-y-4 rounded-2xl bg-neutral-900/80 p-8 shadow-lg ring-1 ring-neutral-700/50">
             {error && (
               <div className="rounded-lg bg-red-500/10 px-4 py-3 text-sm text-red-400 ring-1 ring-red-500/20">
                 {error}
@@ -110,7 +110,7 @@ export default function LoginPage() {
             <div>
               <label
                 htmlFor="username"
-                className="block text-sm font-medium text-neutral-300"
+                className="block text-sm font-medium text-neutral-400"
               >
                 Username
               </label>
@@ -131,7 +131,7 @@ export default function LoginPage() {
             <div>
               <label
                 htmlFor="hash"
-                className="block text-sm font-medium text-neutral-300"
+                className="block text-sm font-medium text-neutral-400"
               >
                 Hash Key
               </label>
@@ -153,7 +153,7 @@ export default function LoginPage() {
                 <div className="w-full border-t border-neutral-700"></div>
               </div>
               <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-neutral-900 px-2 text-neutral-500">Or</span>
+                <span className="bg-neutral-900/80 px-2 text-neutral-500">Or</span>
               </div>
             </div>
 
@@ -177,7 +177,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full rounded-lg bg-emerald-500 px-4 py-3 text-sm font-semibold uppercase tracking-wide  transition hover:bg-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:ring-offset-2 focus:ring-offset-neutral-900 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full rounded-lg bg-emerald-500 px-4 py-3 text-sm font-semibold uppercase tracking-wide text-white transition hover:bg-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:ring-offset-2 focus:ring-offset-neutral-900 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? "Signing in..." : "Sign in"}
             </button>
