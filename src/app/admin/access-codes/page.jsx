@@ -162,8 +162,8 @@ export default function AccessCodesPage() {
                   Manage verification access for buyers and collectors
                 </p>
               </div>
-              <div className="flex items-center gap-2 text-xs text-neutral-500">
-                <div className={`w-2 h-2 rounded-full ${isRefreshing ? 'bg-cyan-400 animate-pulse' : 'bg-neutral-600'}`}></div>
+              <div className="flex items-center gap-2 text-xs text-neutral-400">
+                <div className={`w-2 h-2 rounded-full bg-cyan-400 ${isRefreshing ? 'animate-pulse scale-125' : ''} transition-transform`}></div>
                 <span>Live updates</span>
               </div>
             </div>
