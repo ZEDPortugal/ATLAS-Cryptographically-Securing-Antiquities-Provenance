@@ -71,7 +71,7 @@ Send these instructions to new users:
 
 **Welcome to ATLAS!**
 
-You've been granted access to the ATLAS Artifact Management System.
+You've been granted access to the ATLAS Antique Management System.
 
 **Your Credentials:**
 - Username: `{username}`

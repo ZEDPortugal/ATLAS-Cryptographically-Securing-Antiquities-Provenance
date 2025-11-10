@@ -46,7 +46,7 @@ Access Code: [PASTE CODE HERE]
 
 ## 📱 SMS Template
 ```
-ATLAS artifact verification:
+ATLAS antique verification:
 https://atlas-cryptographically-securing-an.vercel.app/verify-secure
 Code: [PASTE CODE]
 Expires: 48hrs

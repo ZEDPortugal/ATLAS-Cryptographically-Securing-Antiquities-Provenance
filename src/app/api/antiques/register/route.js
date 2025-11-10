@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
-import Artifact from '../../../../lib/artifact'
+import Antique from '../../../../lib/antique'
 import { computeMultiModalHash } from '../../../../lib/hash'
-import { appendBlock, saveArtifact, initializeDatabase } from '../../../../lib/db'
+import { appendBlock, saveAntique, initializeDatabase } from '../../../../lib/db'
 
 export async function POST(req) {
   const body = await req.json().catch(() => null)
@@ -10,7 +10,7 @@ export async function POST(req) {
   const { name, description, images } = body
   if (!name) return NextResponse.json({ error: 'missing name' }, { status: 400 })
 
-  const art = new Artifact({ name, description, images })
+  const art = new Antique({ name, description, images })
   const missingViews = Object.entries(art.images)
     .filter(([, value]) => !value.data)
     .map(([key]) => key)
@@ -22,8 +22,8 @@ export async function POST(req) {
   const hash = mm.combined_hash;
 
   try {
-    // Save artifact FIRST (before blockchain entry due to foreign key constraint)
-    await saveArtifact(hash, {
+    // Save antique FIRST (before blockchain entry due to foreign key constraint)
+    await saveAntique(hash, {
       name: art.name,
       description: art.description,
       images: art.images,
@@ -34,12 +34,12 @@ export async function POST(req) {
       provenanceDigest: mm.provenance_digest,
     })
     
-    // Then append to blockchain (references artifact)
-  const block = await appendBlock({ artifactHash: hash, owner: name })
+    // Then append to blockchain (references antique)
+  const block = await appendBlock({ antiqueHash: hash, owner: name })
     
     return NextResponse.json({ status: 'ok', hash, block })
   } catch (e) {
-    console.error('Artifact registration error:', e)
+    console.error('Antique registration error:', e)
     return NextResponse.json({ 
       error: 'storage error', 
       detail: e.message || String(e),

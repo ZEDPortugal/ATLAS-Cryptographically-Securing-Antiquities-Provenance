@@ -52,10 +52,10 @@ The ATLAS Access Code System provides **time-limited, secure verification access
    - Enter the access code in the form
    - Click "Access Portal"
 
-3. **Verify Artifacts**
+3. **Verify Antiques**
    - Once authorized, full verification interface is available
    - Upload QR codes from certificates
-   - Enter artifact hashes manually
+   - Enter antique hashes manually
    - View complete blockchain records and images
    - No time limit during session (as long as code hasn't expired)
 
@@ -215,7 +215,7 @@ Cleanup expired codes.
 ### 3. Museum Exhibitions
 - Generate codes for visitors/researchers
 - Display link at exhibition
-- Visitors verify artifacts on-site
+- Visitors verify antiques on-site
 - Codes valid for exhibition duration
 
 ### 4. Collector Networks
@@ -296,7 +296,7 @@ Manual testing:
 3. Generate a test code
 4. Open `/verify-secure` in incognito window
 5. Enter the code
-6. Verify an artifact
+6. Verify an antique
 
 ---
 

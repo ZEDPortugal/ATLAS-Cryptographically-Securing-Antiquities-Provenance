@@ -50,7 +50,7 @@ POSTGRES_PASSWORD="your_password_here"
 npm run db:init
 ```
 
-This creates all necessary tables (users, artifacts, blockchain).
+This creates all necessary tables (users, antiques, blockchain).
 
 ## Step 5: Start Development Server
 
@@ -107,7 +107,7 @@ atlas/
 │   └── lib/              # Utilities
 │       ├── db.js         # Database functions
 │       ├── blockchain.js # Blockchain logic
-│       └── artifact.js   # Artifact handling
+│       └── antique.js   # Antique handling
 ├── .env.local            # Environment variables (local)
 └── scripts/
     └── init-db.js        # Database initialization
@@ -126,7 +126,7 @@ npm run lint      # Run linter
 ## Features
 
 ✅ User Registration & Authentication (Hash-based)
-✅ Artifact Registration with Images
+✅ Antique Registration with Images
 ✅ QR Code Generation
 ✅ Blockchain Verification
 ✅ PostgreSQL Database

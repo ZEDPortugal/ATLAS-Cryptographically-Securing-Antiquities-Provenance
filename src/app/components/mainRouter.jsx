@@ -29,10 +29,37 @@ export default function MainRouter() {
     totalUsage: 0,
     loading: true
   })
+  const [dashboardStats, setDashboardStats] = useState({
+    totalAntiques: '—',
+    verifiedItems: '—',
+    chainHeight: '—',
+    loading: true
+  });
 
   useEffect(() => {
     fetchAccessCodeStats()
+    fetchDashboardStats()
   }, [])
+
+  const fetchDashboardStats = async () => {
+    try {
+      const res = await fetch('/api/dashboard-stats');
+      const data = await res.json();
+      if (data.success) {
+        setDashboardStats({
+          totalAntiques: data.stats.totalAntiques,
+          verifiedItems: data.stats.verifiedItems,
+          chainHeight: data.stats.chainHeight,
+          loading: false
+        });
+      } else {
+        setDashboardStats(prev => ({ ...prev, loading: false }));
+      }
+    } catch (error) {
+      console.error('Failed to fetch dashboard stats:', error);
+      setDashboardStats(prev => ({ ...prev, loading: false }));
+    }
+  };
 
   const fetchAccessCodeStats = async () => {
     try {
@@ -61,22 +88,22 @@ export default function MainRouter() {
 
   const quickActions = [
     {
-      title: 'Register Artifact',
-      description: 'Register a new artifact on the blockchain',
+      title: 'Register Antique',
+      description: 'Register a new antique on the blockchain',
       href: '/register',
       icon: HiDocumentText,
       color: 'emerald',
     },
     {
-      title: 'Verify Artifact',
-      description: 'Verify the authenticity of an artifact',
+      title: 'Verify Antique',
+      description: 'Verify the authenticity of an antique',
       href: '/verify',
       icon: HiSearch,
       color: 'blue',
     },
     {
       title: 'View Items',
-      description: 'Browse all registered artifacts',
+      description: 'Browse all registered antiques',
       href: '/items',
       icon: HiCube,
       color: 'purple',
@@ -98,10 +125,10 @@ export default function MainRouter() {
   ]
 
   const stats = [
-    { label: 'Total Artifacts', value: '—', icon: HiShieldCheck },
-    { label: 'Verified Items', value: '—', icon: HiCheckCircle },
+    { label: 'Total Antiques', value: dashboardStats.loading ? '...' : dashboardStats.totalAntiques, icon: HiShieldCheck },
+    { label: 'Verified Items', value: dashboardStats.loading ? '...' : dashboardStats.verifiedItems, icon: HiCheckCircle },
     { label: 'Pending', value: '—', icon: HiClock },
-    { label: 'Chain Height', value: '—', icon: HiLink },
+    { label: 'Chain Height', value: dashboardStats.loading ? '...' : dashboardStats.chainHeight, icon: HiLink },
   ]
 
   return (
@@ -113,7 +140,7 @@ export default function MainRouter() {
             Welcome back{user?.username ? `, ${user.username}` : ''}
           </h1>
           <p className="text-neutral-400 text-lg">
-            Manage and verify artifact provenance with blockchain security
+            Manage and verify antique provenance with blockchain security
           </p>
         </section>
 
@@ -223,7 +250,7 @@ export default function MainRouter() {
               <HiClipboardList className="text-6xl text-neutral-600 mx-auto mb-4" />
               <p className="text-neutral-400 text-lg mb-2">No recent activity</p>
               <p className="text-neutral-500 text-sm">
-                Your artifact registrations and verifications will appear here
+                Your antique registrations and verifications will appear here
               </p>
             </div>
           </div>

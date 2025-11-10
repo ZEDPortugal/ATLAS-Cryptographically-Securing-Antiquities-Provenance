@@ -70,12 +70,12 @@ Users receive credentials from developers and can login using **two methods**:
 
 **Protected pages:**
 - Dashboard (home page) - `/`
-- Register (artifact registration) - `/register`
-- Verify (artifact verification) - `/verify`
-- Items (artifact inventory) - `/items`
+- Register (antique registration) - `/register`
+- Verify (antique verification) - `/verify`
+- Items (antique inventory) - `/items`
 - Records (provenance ledger) - `/records`
 - Preview (registration preview) - `/register/preview`
-- QR Code (artifact QR) - `/register/qr`
+- QR Code (antique QR) - `/register/qr`
 
 ## How It Works
 
@@ -210,7 +210,7 @@ src/app/
    → Access granted
    ```
 
-3. **Access System**: All artifact management features available
+3. **Access System**: All antique management features available
 
 ## Support
 

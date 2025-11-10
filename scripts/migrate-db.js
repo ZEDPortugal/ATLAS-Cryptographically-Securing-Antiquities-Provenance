@@ -16,7 +16,7 @@ async function initializeDatabase() {
     console.log('Table "users" created or already exists.');
 
     await sql`
-      CREATE TABLE IF NOT EXISTS artifacts (
+      CREATE TABLE IF NOT EXISTS antiques (
         hash VARCHAR(255) PRIMARY KEY,
         name VARCHAR(500) NOT NULL,
         description TEXT,
@@ -28,26 +28,26 @@ async function initializeDatabase() {
         provenance_digest VARCHAR(128)
       )
     `;
-    console.log('Table "artifacts" created or already exists.');
+    console.log('Table "antiques" created or already exists.');
 
     await sql`
       CREATE TABLE IF NOT EXISTS blockchain (
         id SERIAL PRIMARY KEY,
         index INTEGER NOT NULL,
         timestamp BIGINT NOT NULL,
-        artifact_hash VARCHAR(255) NOT NULL,
+        antique_hash VARCHAR(255) NOT NULL,
         owner VARCHAR(500) NOT NULL,
         previous_hash VARCHAR(255) NOT NULL,
         hash VARCHAR(255) NOT NULL UNIQUE,
-        FOREIGN KEY (artifact_hash) REFERENCES artifacts(hash)
+        FOREIGN KEY (antique_hash) REFERENCES antiques(hash)
       )
     `;
     console.log('Table "blockchain" created or already exists.');
 
     await sql`
-      CREATE INDEX IF NOT EXISTS idx_artifact_hash ON blockchain(artifact_hash)
+      CREATE INDEX IF NOT EXISTS idx_antique_hash ON blockchain(antique_hash)
     `;
-    console.log('Index "idx_artifact_hash" created or already exists.');
+    console.log('Index "idx_antique_hash" created or already exists.');
 
     await sql`
       CREATE TABLE IF NOT EXISTS access_codes (

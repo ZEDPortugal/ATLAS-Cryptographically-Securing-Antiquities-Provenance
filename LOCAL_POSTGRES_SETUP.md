@@ -80,7 +80,7 @@ node scripts/init-db.js
 
 This will create all necessary tables:
 - `users` - User accounts
-- `artifacts` - Artifact registry
+- `antiques` - Antique registry
 - `blockchain` - Blockchain records
 
 ### 5. Start the Development Server
@@ -188,7 +188,7 @@ atlas=#
 \c atlas          -- Connect to atlas database
 \dt               -- List all tables
 SELECT * FROM users;
-SELECT * FROM artifacts;
+SELECT * FROM antiques;
 SELECT * FROM blockchain;
 ```
 
