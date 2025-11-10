@@ -18,8 +18,8 @@ export async function POST(req) {
     return NextResponse.json({ error: `Missing image(s): ${missingViews.join(', ')}` }, { status: 400 })
   }
   // Compute multi-modal hash components and composite
-  const mm = computeMultiModalHash({ name: art.name, description: art.description, images: art.images })
-  const hash = mm.combined_hash
+  const mm = await computeMultiModalHash({ name: art.name, description: art.description, images: art.images });
+  const hash = mm.combined_hash;
 
   try {
     // Save artifact FIRST (before blockchain entry due to foreign key constraint)
