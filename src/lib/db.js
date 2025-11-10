@@ -46,9 +46,12 @@ export async function getAllUsers() {
 // ============================================
 
 export async function saveAntique(hash, antique) {
+  // Normalize hash to lowercase for consistency
+  const normalizedHash = hash.toLowerCase().trim();
+  
   await sql`
     INSERT INTO antiques (hash, name, description, images, created_at, combined_hash, image_phash, text_sig, provenance_digest)
-    VALUES (${hash}, ${antique.name}, ${antique.description || ''}, ${JSON.stringify(antique.images)}, ${antique.createdAt}, ${antique.combinedHash || null}, ${antique.imagePhash || null}, ${antique.textSig || null}, ${antique.provenanceDigest || null})
+    VALUES (${normalizedHash}, ${antique.name}, ${antique.description || ''}, ${JSON.stringify(antique.images)}, ${antique.createdAt}, ${antique.combinedHash || null}, ${antique.imagePhash || null}, ${antique.textSig || null}, ${antique.provenanceDigest || null})
     ON CONFLICT (hash) DO UPDATE SET
       name = EXCLUDED.name,
       description = EXCLUDED.description,
@@ -59,7 +62,7 @@ export async function saveAntique(hash, antique) {
       text_sig = COALESCE(EXCLUDED.text_sig, antiques.text_sig),
       provenance_digest = COALESCE(EXCLUDED.provenance_digest, antiques.provenance_digest)
   `;
-  return { ...antique, hash };
+  return { ...antique, hash: normalizedHash };
 }
 
 export async function getAntique(hash) {
@@ -148,6 +151,9 @@ export async function loadChain() {
 }
 
 export async function appendBlock({ antiqueHash, owner }) {
+  // Normalize hash to lowercase for consistency
+  const normalizedHash = antiqueHash.toLowerCase().trim();
+  
   // Get the last block
   const lastBlockResult = await sql`
     SELECT * FROM blockchain ORDER BY index DESC LIMIT 1
@@ -161,7 +167,7 @@ export async function appendBlock({ antiqueHash, owner }) {
   const block = new Block({ 
     index, 
     timestamp, 
-    antique_hash: antiqueHash,  // Use snake_case parameter name
+    antique_hash: normalizedHash,  // Use normalized hash
     owner, 
     previousHash 
   });

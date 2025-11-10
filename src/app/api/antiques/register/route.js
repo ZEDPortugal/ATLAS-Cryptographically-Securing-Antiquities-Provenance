@@ -19,12 +19,12 @@ export async function POST(req) {
   }
   // Compute multi-modal hash components and composite
   const mm = await computeMultiModalHash({ name: art.name, description: art.description, images: art.images });
-  const hash = mm.combined_hash;
+  const hash = mm.combined_hash.toLowerCase().trim(); // Normalize hash
 
   try {
     await initializeDatabase();
     // Save antique FIRST (before blockchain entry due to foreign key constraint)
-    await saveAntique(hash, {
+    const savedAntique = await saveAntique(hash, {
       name: art.name,
       description: art.description,
       images: art.images,
@@ -38,9 +38,9 @@ export async function POST(req) {
     // Then append to blockchain (references antique)
     // Use provided owner or fallback to antique name
     const blockOwner = owner || name
-    const block = await appendBlock({ antiqueHash: hash, owner: blockOwner })
+    const block = await appendBlock({ antiqueHash: savedAntique.hash, owner: blockOwner })
     
-    return NextResponse.json({ status: 'ok', hash, block })
+    return NextResponse.json({ status: 'ok', hash: savedAntique.hash, block })
   } catch (e) {
     console.error('Antique registration error:', e)
     return NextResponse.json({ 
