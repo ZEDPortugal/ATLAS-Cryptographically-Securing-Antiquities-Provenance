@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { getDraftImages, clearDraftImages } from '@/lib/draftCache'
 import ProtectedRoute from '../../components/ProtectedRoute'
+import { useAuth } from '../../context/AuthContext'
 
 const IMAGE_VIEWS = [
   { key: 'front', label: 'Front' },
@@ -33,6 +34,7 @@ function buildImagePayload(source) {
 
 export default function RegisterPreviewPage() {
   const router = useRouter()
+  const { user } = useAuth()
   const [draft, setDraft] = useState({ name: '', description: '' })
   const [previews, setPreviews] = useState(INITIAL_PREVIEWS)
   const [images, setImages] = useState(INITIAL_IMAGES)
@@ -116,6 +118,9 @@ export default function RegisterPreviewPage() {
     try {
       const payloadImages = buildImagePayload(images)
 
+      // Get owner from authenticated user
+      const ownerName = user?.name || user?.username || 'Unknown'
+
       const res = await fetch('/api/antiques/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -123,6 +128,7 @@ export default function RegisterPreviewPage() {
           name: draft.name,
           description: draft.description,
           images: payloadImages,
+          owner: ownerName, // Pass authenticated user's name as owner
         }),
       })
 

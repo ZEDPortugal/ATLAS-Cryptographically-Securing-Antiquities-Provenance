@@ -7,7 +7,7 @@ export async function POST(req) {
   const body = await req.json().catch(() => null)
   if (!body) return NextResponse.json({ error: 'invalid json' }, { status: 400 })
 
-  const { name, description, images } = body
+  const { name, description, images, owner } = body
   if (!name) return NextResponse.json({ error: 'missing name' }, { status: 400 })
 
   const art = new Antique({ name, description, images })
@@ -36,7 +36,9 @@ export async function POST(req) {
     })
     
     // Then append to blockchain (references antique)
-  const block = await appendBlock({ antiqueHash: hash, owner: name })
+    // Use provided owner or fallback to antique name
+    const blockOwner = owner || name
+    const block = await appendBlock({ antiqueHash: hash, owner: blockOwner })
     
     return NextResponse.json({ status: 'ok', hash, block })
   } catch (e) {

@@ -82,6 +82,31 @@ export async function getAntique(hash) {
   };
 }
 
+export async function getAllAntiques() {
+  const result = await sql`
+    SELECT hash, name, description, created_at, combined_hash, image_phash, text_sig, provenance_digest
+    FROM antiques
+    ORDER BY created_at DESC
+  `;
+  return result.rows.map(row => ({
+    hash: row.hash,
+    name: row.name,
+    description: row.description,
+    createdAt: row.created_at,
+    combinedHash: row.combined_hash,
+    imagePhash: row.image_phash,
+    textSig: row.text_sig,
+    provenanceDigest: row.provenance_digest,
+  }));
+}
+
+export async function getAntiqueCount() {
+  const result = await sql`
+    SELECT COUNT(*) as count FROM antiques
+  `;
+  return parseInt(result.rows[0].count, 10);
+}
+
 // ============================================
 // BLOCKCHAIN FUNCTIONS
 // ============================================
@@ -94,7 +119,7 @@ export class Block {
   constructor({ index, timestamp, antique_hash, owner, previousHash = '' }) {
     this.index = index;
     this.timestamp = timestamp;
-    this.antiqueHash = antique_hash;
+    this.antiqueHash = antique_hash; // Store as camelCase
     this.owner = owner;
     this.previousHash = previousHash;
     this.hash = this.computeHash();
@@ -129,7 +154,14 @@ export async function appendBlock({ antiqueHash, owner }) {
   const timestamp = Date.now();
   const previousHash = lastBlockResult.rows.length > 0 ? lastBlockResult.rows[0].hash : '';
   
-  const block = new Block({ index, timestamp, antiqueHash, owner, previousHash });
+  // Pass antique_hash with underscore to Block constructor
+  const block = new Block({ 
+    index, 
+    timestamp, 
+    antique_hash: antiqueHash,  // Use snake_case parameter name
+    owner, 
+    previousHash 
+  });
   
   await sql`
     INSERT INTO blockchain (index, timestamp, antique_hash, owner, previous_hash, hash)
@@ -155,4 +187,11 @@ export async function findByHash(antiqueHash) {
     previousHash: row.previous_hash,
     hash: row.hash,
   };
+}
+
+export async function getChainHeight() {
+  const result = await sql`
+    SELECT COUNT(*) as count FROM blockchain
+  `;
+  return parseInt(result.rows[0].count, 10);
 }

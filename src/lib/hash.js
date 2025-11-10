@@ -36,7 +36,9 @@ async function generatePerceptualHashes(images) {
     if (imageData) {
       try {
         // jimp expects a buffer, remove data URI prefix if present
-        const base64Data = imageData.split(',')[1] || imageData;
+        const base64Data = imageData.includes(',') 
+          ? imageData.split(',')[1] 
+          : imageData;
         const buffer = Buffer.from(base64Data, 'base64');
         const image = await Jimp.read(buffer);
         pHashes.push(image.hash()); // 64-bit perceptual hash
