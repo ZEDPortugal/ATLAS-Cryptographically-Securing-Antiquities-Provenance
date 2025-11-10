@@ -4,11 +4,89 @@ import { sql } from '@vercel/postgres';
 // Export the sql helper so other modules can use the same serverless-friendly client
 export { sql };
 
+let isInitialized = false;
+
 export async function initializeDatabase() {
+  if (isInitialized) {
+    return; // Already initialized
+  }
+
   try {
-    console.log('Database connection ready.');
+    console.log('🔄 Initializing database tables...');
+    
+    // Create users table
+    await sql`
+      CREATE TABLE IF NOT EXISTS users (
+        id VARCHAR(255) PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
+        username VARCHAR(255) UNIQUE NOT NULL,
+        position VARCHAR(255) NOT NULL,
+        hash VARCHAR(64) NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `;
+    console.log('✅ Users table ready');
+
+    // Create antiques table
+    await sql`
+      CREATE TABLE IF NOT EXISTS antiques (
+        hash VARCHAR(255) PRIMARY KEY,
+        name VARCHAR(500) NOT NULL,
+        description TEXT,
+        images JSONB NOT NULL,
+        created_at BIGINT NOT NULL,
+        combined_hash VARCHAR(128),
+        image_phash VARCHAR(128),
+        text_sig TEXT,
+        provenance_digest VARCHAR(128)
+      )
+    `;
+    console.log('✅ Antiques table ready');
+
+    // Create blockchain table
+    await sql`
+      CREATE TABLE IF NOT EXISTS blockchain (
+        id SERIAL PRIMARY KEY,
+        index INTEGER NOT NULL,
+        timestamp BIGINT NOT NULL,
+        antique_hash VARCHAR(255) NOT NULL,
+        owner VARCHAR(500) NOT NULL,
+        previous_hash VARCHAR(255) NOT NULL,
+        hash VARCHAR(255) NOT NULL UNIQUE,
+        FOREIGN KEY (antique_hash) REFERENCES antiques(hash)
+      )
+    `;
+    console.log('✅ Blockchain table ready');
+
+    // Create index
+    await sql`
+      CREATE INDEX IF NOT EXISTS idx_antique_hash ON blockchain(antique_hash)
+    `;
+
+    // Create access_codes table
+    await sql`
+      CREATE TABLE IF NOT EXISTS access_codes (
+        code VARCHAR(16) PRIMARY KEY,
+        created_at BIGINT NOT NULL,
+        expires_at BIGINT NOT NULL,
+        created_by VARCHAR(255) NOT NULL,
+        usage_count INTEGER NOT NULL DEFAULT 0,
+        last_used BIGINT,
+        deleted BOOLEAN NOT NULL DEFAULT FALSE
+      )
+    `;
+    console.log('✅ Access codes table ready');
+
+    await sql`
+      CREATE INDEX IF NOT EXISTS idx_access_codes_expires ON access_codes(expires_at)
+    `;
+
+    isInitialized = true;
+    console.log('✅ Database initialization complete');
   } catch (error) {
-    console.error('Error initializing database:', error);
+    console.error('❌ Error initializing database:', error);
+    console.error('Error details:', error.message);
+    console.error('Stack:', error.stack);
     throw new Error(`Database initialization failed: ${error.message}`);
   }
 }

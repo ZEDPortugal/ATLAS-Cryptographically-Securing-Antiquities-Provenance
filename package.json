@@ -2,12 +2,14 @@
   "name": "atlas",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev --webpack",
     "build": "node scripts/migrate-db.js && next build --webpack",
     "start": "next start",
     "lint": "eslint",
-    "db:init": "node scripts/init-db.js"
+    "db:init": "node scripts/init-db.js",
+    "db:test": "node test-db-connection.js"
   },
   "dependencies": {
     "@vercel/postgres": "^0.10.0",
