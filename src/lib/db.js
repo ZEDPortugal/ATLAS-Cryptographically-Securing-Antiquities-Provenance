@@ -18,9 +18,9 @@ export async function initializeDatabase() {
       )
     `;
     
-    // Create artifacts table
+    // Create antiques table
     await sql`
-      CREATE TABLE IF NOT EXISTS artifacts (
+      CREATE TABLE IF NOT EXISTS antiques (
         hash VARCHAR(255) PRIMARY KEY,
         name VARCHAR(500) NOT NULL,
         description TEXT,
@@ -39,17 +39,17 @@ export async function initializeDatabase() {
         id SERIAL PRIMARY KEY,
         index INTEGER NOT NULL,
         timestamp BIGINT NOT NULL,
-        artifact_hash VARCHAR(255) NOT NULL,
+        antique_hash VARCHAR(255) NOT NULL,
         owner VARCHAR(500) NOT NULL,
         previous_hash VARCHAR(255) NOT NULL,
         hash VARCHAR(255) NOT NULL UNIQUE,
-        FOREIGN KEY (artifact_hash) REFERENCES artifacts(hash)
+        FOREIGN KEY (antique_hash) REFERENCES antiques(hash)
       )
     `;
     
     // Create index for faster lookups
     await sql`
-      CREATE INDEX IF NOT EXISTS idx_artifact_hash ON blockchain(artifact_hash)
+      CREATE INDEX IF NOT EXISTS idx_antique_hash ON blockchain(antique_hash)
     `;
 
     // Access codes table
@@ -104,29 +104,29 @@ export async function getAllUsers() {
 }
 
 // ============================================
-// ARTIFACT FUNCTIONS
+// ANTIQUE FUNCTIONS
 // ============================================
 
-export async function saveArtifact(hash, artifact) {
+export async function saveAntique(hash, antique) {
   await sql`
-    INSERT INTO artifacts (hash, name, description, images, created_at, combined_hash, image_phash, text_sig, provenance_digest)
-    VALUES (${hash}, ${artifact.name}, ${artifact.description || ''}, ${JSON.stringify(artifact.images)}, ${artifact.createdAt}, ${artifact.combinedHash || null}, ${artifact.imagePhash || null}, ${artifact.textSig || null}, ${artifact.provenanceDigest || null})
+    INSERT INTO antiques (hash, name, description, images, created_at, combined_hash, image_phash, text_sig, provenance_digest)
+    VALUES (${hash}, ${antique.name}, ${antique.description || ''}, ${JSON.stringify(antique.images)}, ${antique.createdAt}, ${antique.combinedHash || null}, ${antique.imagePhash || null}, ${antique.textSig || null}, ${antique.provenanceDigest || null})
     ON CONFLICT (hash) DO UPDATE SET
       name = EXCLUDED.name,
       description = EXCLUDED.description,
       images = EXCLUDED.images,
       created_at = EXCLUDED.created_at,
-      combined_hash = COALESCE(EXCLUDED.combined_hash, artifacts.combined_hash),
-      image_phash = COALESCE(EXCLUDED.image_phash, artifacts.image_phash),
-      text_sig = COALESCE(EXCLUDED.text_sig, artifacts.text_sig),
-      provenance_digest = COALESCE(EXCLUDED.provenance_digest, artifacts.provenance_digest)
+      combined_hash = COALESCE(EXCLUDED.combined_hash, antiques.combined_hash),
+      image_phash = COALESCE(EXCLUDED.image_phash, antiques.image_phash),
+      text_sig = COALESCE(EXCLUDED.text_sig, antiques.text_sig),
+      provenance_digest = COALESCE(EXCLUDED.provenance_digest, antiques.provenance_digest)
   `;
-  return { ...artifact, hash };
+  return { ...antique, hash };
 }
 
-export async function getArtifact(hash) {
+export async function getAntique(hash) {
   const result = await sql`
-    SELECT * FROM artifacts WHERE hash = ${hash} LIMIT 1
+    SELECT * FROM antiques WHERE hash = ${hash} LIMIT 1
   `;
   if (result.rows.length === 0) return null;
   
@@ -153,17 +153,17 @@ function sha3(input) {
 }
 
 export class Block {
-  constructor({ index, timestamp, artifactHash, owner, previousHash = '' }) {
+  constructor({ index, timestamp, antiqueHash, owner, previousHash = '' }) {
     this.index = index;
     this.timestamp = timestamp;
-    this.artifactHash = artifactHash;
+    this.antiqueHash = antiqueHash;
     this.owner = owner;
     this.previousHash = previousHash;
     this.hash = this.computeHash();
   }
 
   computeHash() {
-    return sha3(`${this.index}|${this.timestamp}|${this.artifactHash}|${this.owner}|${this.previousHash}`);
+    return sha3(`${this.index}|${this.timestamp}|${this.antiqueHash}|${this.owner}|${this.previousHash}`);
   }
 }
 
@@ -174,14 +174,14 @@ export async function loadChain() {
   return result.rows.map(row => ({
     index: row.index,
     timestamp: row.timestamp,
-    artifactHash: row.artifact_hash,
+    antiqueHash: row.antique_hash,
     owner: row.owner,
     previousHash: row.previous_hash,
     hash: row.hash,
   }));
 }
 
-export async function appendBlock({ artifactHash, owner }) {
+export async function appendBlock({ antiqueHash, owner }) {
   // Get the last block
   const lastBlockResult = await sql`
     SELECT * FROM blockchain ORDER BY index DESC LIMIT 1
@@ -191,19 +191,19 @@ export async function appendBlock({ artifactHash, owner }) {
   const timestamp = Date.now();
   const previousHash = lastBlockResult.rows.length > 0 ? lastBlockResult.rows[0].hash : '';
   
-  const block = new Block({ index, timestamp, artifactHash, owner, previousHash });
+  const block = new Block({ index, timestamp, antiqueHash, owner, previousHash });
   
   await sql`
-    INSERT INTO blockchain (index, timestamp, artifact_hash, owner, previous_hash, hash)
-    VALUES (${block.index}, ${block.timestamp}, ${block.artifactHash}, ${block.owner}, ${block.previousHash}, ${block.hash})
+    INSERT INTO blockchain (index, timestamp, antique_hash, owner, previous_hash, hash)
+    VALUES (${block.index}, ${block.timestamp}, ${block.antiqueHash}, ${block.owner}, ${block.previousHash}, ${block.hash})
   `;
   
   return block;
 }
 
-export async function findByHash(artifactHash) {
+export async function findByHash(antiqueHash) {
   const result = await sql`
-    SELECT * FROM blockchain WHERE artifact_hash = ${artifactHash} LIMIT 1
+    SELECT * FROM blockchain WHERE antique_hash = ${antiqueHash} LIMIT 1
   `;
   
   if (result.rows.length === 0) return null;
@@ -212,7 +212,7 @@ export async function findByHash(artifactHash) {
   return {
     index: row.index,
     timestamp: row.timestamp,
-    artifactHash: row.artifact_hash,
+    antiqueHash: row.antique_hash,
     owner: row.owner,
     previousHash: row.previous_hash,
     hash: row.hash,
