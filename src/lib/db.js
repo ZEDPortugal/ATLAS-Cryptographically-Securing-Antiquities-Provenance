@@ -63,8 +63,11 @@ export async function saveAntique(hash, antique) {
 }
 
 export async function getAntique(hash) {
+  // Normalize hash to lowercase for consistent comparison
+  const normalizedHash = hash.toLowerCase().trim();
+  
   const result = await sql`
-    SELECT * FROM antiques WHERE hash = ${hash} LIMIT 1
+    SELECT * FROM antiques WHERE LOWER(hash) = ${normalizedHash} LIMIT 1
   `;
   if (result.rows.length === 0) return null;
   
@@ -172,8 +175,11 @@ export async function appendBlock({ antiqueHash, owner }) {
 }
 
 export async function findByHash(antiqueHash) {
+  // Normalize hash to lowercase for consistent comparison
+  const normalizedHash = antiqueHash.toLowerCase().trim();
+  
   const result = await sql`
-    SELECT * FROM blockchain WHERE antique_hash = ${antiqueHash} LIMIT 1
+    SELECT * FROM blockchain WHERE LOWER(antique_hash) = ${normalizedHash} LIMIT 1
   `;
   
   if (result.rows.length === 0) return null;
