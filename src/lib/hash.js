@@ -1,5 +1,6 @@
 import crypto from 'crypto';
-import Jimp from 'jimp';
+import jimp from 'jimp';
+const { default: Jimp } = jimp;
 
 function sha3_256(input) {
   return crypto.createHash('sha3-256').update(input).digest('hex');

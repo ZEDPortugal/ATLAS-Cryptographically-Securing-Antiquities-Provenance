@@ -12,7 +12,7 @@ const links = [
 	{ label: "verify", href: "/verify" },
 	{ label: "items", href: "/items" },
 	{ label: "records", href: "/records" },
-	{ label: "staff control", href: "/admin/access-codes" },
+	{ label: "Access control", href: "/admin/access-codes" },
 ];
 
 const INDICATOR_INSET = 16;

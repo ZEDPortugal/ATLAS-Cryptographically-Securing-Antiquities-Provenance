@@ -127,7 +127,7 @@ export default function AccessCodesPage() {
         <div className="mx-auto w-full max-w-6xl">
           <div className="mb-8">
             <h1 className="text-3xl font-semibold uppercase tracking-[0.25em] text-emerald-400">
-              Staff Control
+              Access Control
             </h1>
             <p className="mt-2 text-sm text-neutral-400">
               Manage verification access for buyers and collectors
@@ -137,7 +137,7 @@ export default function AccessCodesPage() {
           {/* Generate New Code Card */}
           <div className="mb-6 rounded-3xl bg-neutral-900/70 p-6 shadow-xl border border-neutral-800 hover:shadow-2xl transition-shadow cursor-pointer">
             <div className="flex items-start gap-4">
-              <div className="flex-shrink-0">
+              <div className="shrink-0">
         
               </div>
               <div className="flex-1">
