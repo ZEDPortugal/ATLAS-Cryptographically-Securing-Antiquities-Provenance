@@ -98,11 +98,11 @@ export default function VerifyPage() {
         <h1 className="text-3xl font-semibold uppercase tracking-[0.25em] text-emerald-400 sm:tracking-[0.4em]">Verify</h1>
         <h1 className="text-3xl font-semibold uppercase tracking-[0.25em] text-neutral-200 sm:tracking-[0.4em]">Antique</h1>
         </div>
-        <p className="mt-2 text-sm text-neutral-400">Enter an artifact hash to fetch the stored record and imagery.</p>
+        <p className="mt-2 text-sm text-neutral-400">Enter an antique hash to fetch the stored record and imagery.</p>
 
         <form onSubmit={handleCheck} className="mt-8 flex flex-col gap-4 md:flex-row md:items-end">
           <div className="flex-1">
-            <label className="text-xs uppercase tracking-widest text-neutral-400">Artifact Hash</label>
+            <label className="text-xs uppercase tracking-widest text-neutral-400">Antique Hash</label>
             <input
               className="mt-2 w-full rounded-xl border border-neutral-700 dark:border-neutral-700 light:border-neutral-300 bg-neutral-950/80 dark:bg-neutral-950/80 light:bg-neutral-100/80 text-neutral-100 dark:text-neutral-100 light:text-neutral-900 px-4 py-3 text-sm outline-none transition focus:border-emerald-400"
               value={hash}
@@ -163,21 +163,21 @@ export default function VerifyPage() {
                     </div>
                   </div>
                   <div className="mt-4 text-sm text-neutral-400">
-                    <div>Hash: <span className="break-all text-neutral-100 dark:text-neutral-100 light:text-neutral-900">{result.block.artifactHash}</span></div>
+                    <div>Hash: <span className="break-all text-neutral-100 dark:text-neutral-100 light:text-neutral-900">{result.block.antiqueHash}</span></div>
                   </div>
                 </div>
 
-                {result.artifact ? (
+                {result.antique ? (
                   <div className="space-y-6">
                     <div>
-                      <h2 className="text-xl font-semibold text-neutral-100 dark:text-neutral-100 light:text-neutral-900">{result.artifact.name || 'Untitled Artifact'}</h2>
-                      <p className="mt-2 text-sm text-neutral-400 wrap-break-word">{result.artifact.description || 'No description provided.'}</p>
+                      <h2 className="text-xl font-semibold text-neutral-100 dark:text-neutral-100 light:text-neutral-900">{result.antique.name || 'Untitled antique'}</h2>
+                      <p className="mt-2 text-sm text-neutral-400 wrap-break-word">{result.antique.description || 'No description provided.'}</p>
                     </div>
 
-                    {result.artifact.images ? (
+                    {result.antique.images ? (
                       <div className="grid gap-4 md:grid-cols-2">
                         {IMAGE_VIEWS.map(({ key, label }) => {
-                          const entry = result.artifact.images?.[key]
+                          const entry = result.antique.images?.[key]
                           if (!entry?.data) {
                             return (
                               <div key={key} className="rounded-2xl border border-neutral-800 bg-neutral-900/60 p-6 text-center text-sm text-neutral-500">
@@ -197,30 +197,30 @@ export default function VerifyPage() {
                           )
                         })}
                       </div>
-                    ) : result.artifact.imageData ? (
+                    ) : result.antique.imageData ? (
                       <div className="rounded-2xl border border-neutral-800 bg-neutral-900/60 p-4">
                         <div className="mb-2 text-xs uppercase tracking-widest text-neutral-400">Image</div>
                         <img
-                          src={`data:${result.artifact.imageType || 'image/png'};base64,${result.artifact.imageData}`}
-                          alt="Artifact"
+                          src={`data:${result.antique.imageType || 'image/png'};base64,${result.antique.imageData}`}
+                          alt="Antique"
                           className="h-64 w-full rounded-xl object-cover"
                         />
                       </div>
                     ) : (
                       <div className="rounded-2xl border border-neutral-800 bg-neutral-900/60 p-6 text-center text-sm text-neutral-500">
-                        No imagery stored for this artifact.
+                        No imagery stored for this antique.
                       </div>
                     )}
                   </div>
                 ) : (
                   <div className="rounded-2xl border border-neutral-800 bg-neutral-900/60 p-6 text-sm text-neutral-400">
-                    Artifact metadata not found. It may have been registered with an older format.
+                    Antique metadata not found. It may have been registered with an older format.
                   </div>
                 )}
               </div>
             ) : result.status === 'not_found' ? (
               <div className="rounded-2xl border border-red-400/60 bg-red-500/10 p-6 text-sm text-red-200">
-                Artifact not found. Double-check the hash or re-register the item.
+                Antique not found. Double-check the hash or re-register the item.
               </div>
             ) : (
               <div className="rounded-2xl border border-red-400/60 bg-red-500/10 p-6 text-sm text-red-200">

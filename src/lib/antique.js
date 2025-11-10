@@ -14,7 +14,7 @@ function normalizeImages(images) {
   return normalized
 }
 
-export class Artifact {
+export class Antique {
   constructor({ name, description, images }) {
     this.name = String(name || '')
     this.description = String(description || '')
@@ -37,4 +37,4 @@ export class Artifact {
   }
 }
 
-export default Artifact
+export default Antique

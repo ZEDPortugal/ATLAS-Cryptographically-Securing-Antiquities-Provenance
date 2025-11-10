@@ -14,7 +14,7 @@ const IMAGE_VIEWS = [
 
 const INITIAL_PREVIEWS = IMAGE_VIEWS.reduce((acc, { key }) => ({ ...acc, [key]: '' }), {})
 const INITIAL_IMAGES = IMAGE_VIEWS.reduce((acc, { key }) => ({ ...acc, [key]: { data: '', type: '' } }), {})
-const DRAFT_STORAGE_KEY = 'artifactDraft'
+const DRAFT_STORAGE_KEY = 'antiqueDraft'
 
 function buildImagePayload(source) {
   return IMAGE_VIEWS.reduce((acc, { key, label }) => {
@@ -128,7 +128,7 @@ export default function RegisterPreviewPage() {
 
       const payload = await res.json().catch(() => ({}))
       if (!res.ok || payload.status !== 'ok' || !payload.hash) {
-        throw new Error(payload.error || res.statusText || 'Failed to generate artifact hash.')
+        throw new Error(payload.error || res.statusText || 'Failed to generate antique hash.')
       }
 
       if (typeof window !== 'undefined') {
@@ -138,7 +138,7 @@ export default function RegisterPreviewPage() {
 
       router.push(`/register/qr?hash=${encodeURIComponent(payload.hash)}`)
     } catch (err) {
-      setError(err.message || 'Unable to generate artifact hash.')
+      setError(err.message || 'Unable to generate antique hash.')
     } finally {
       setIsConfirming(false)
     }
@@ -227,7 +227,7 @@ export default function RegisterPreviewPage() {
             </div>
 
             <div className="rounded-2xl border border-neutral-700 dark:border-neutral-700 light:border-neutral-300 bg-neutral-950/60 dark:bg-neutral-950/60 light:bg-neutral-100/60 p-5 text-sm text-neutral-400 dark:text-neutral-400 light:text-neutral-600">
-              <div className="font-semibold uppercase tracking-wider text-neutral-300 dark:text-neutral-300 light:text-neutral-700">Artifact Hash</div>
+              <div className="font-semibold uppercase tracking-wider text-neutral-300 dark:text-neutral-300 light:text-neutral-700">Antique Hash</div>
               <div className="mt-2 text-xs text-neutral-500 dark:text-neutral-500 light:text-neutral-500">
                 The unique hash will be generated once you confirm.
               </div>

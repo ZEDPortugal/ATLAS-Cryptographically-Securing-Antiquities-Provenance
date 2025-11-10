@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { findByHash, getArtifact } from '../../../../lib/db'
+import { findByHash, getAntique } from '../../../../lib/db'
 
 export async function POST(req) {
   const body = await req.json().catch(() => null)
@@ -11,8 +11,8 @@ export async function POST(req) {
   try {
     const found = await findByHash(hash)
     if (found) {
-      const artifact = await getAntique(hash)
-      return NextResponse.json({ status: 'found', block: found, artifact })
+      const antique = await getAntique(hash)
+      return NextResponse.json({ status: 'found', block: found, antique })
     }
     return NextResponse.json({ status: 'not_found' })
   } catch (e) {

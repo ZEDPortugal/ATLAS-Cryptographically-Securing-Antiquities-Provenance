@@ -13,7 +13,7 @@ const IMAGE_VIEWS = [
 
 const INITIAL_PREVIEWS = IMAGE_VIEWS.reduce((acc, { key }) => ({ ...acc, [key]: '' }), {})
 const INITIAL_IMAGES = IMAGE_VIEWS.reduce((acc, { key }) => ({ ...acc, [key]: { data: '', type: '' } }), {})
-const DRAFT_STORAGE_KEY = 'artifactDraft'
+const DRAFT_STORAGE_KEY = 'antiqueDraft'
 
 export default function RegisterPage() {
   const router = useRouter()
@@ -169,7 +169,7 @@ export default function RegisterPage() {
 
   function renderUploadArea({ key, label }, options = {}) {
     const { containerClass = '', previewClass = '' } = options
-    const inputId = `artifact-${key}`
+    const inputId = `antique-${key}`
     const preview = previews[key]
     return (
       <div key={key}>
