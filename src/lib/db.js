@@ -6,71 +6,9 @@ export { sql };
 
 export async function initializeDatabase() {
   try {
-    // Create users table if it doesn't exist
-    await sql`
-      CREATE TABLE IF NOT EXISTS users (
-        id VARCHAR(255) PRIMARY KEY,
-        name VARCHAR(255) NOT NULL,
-        username VARCHAR(255) UNIQUE NOT NULL,
-        position VARCHAR(255) NOT NULL,
-        hash VARCHAR(64) NOT NULL,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-      )
-    `;
-    
-    // Create antiques table
-    await sql`
-      CREATE TABLE IF NOT EXISTS antiques (
-        hash VARCHAR(255) PRIMARY KEY,
-        name VARCHAR(500) NOT NULL,
-        description TEXT,
-        images JSONB NOT NULL,
-        created_at BIGINT NOT NULL,
-        combined_hash VARCHAR(255),
-        image_phash VARCHAR(255),
-        text_sig TEXT,
-        provenance_digest VARCHAR(255)
-      )
-    `;
-    
-    // Create blockchain table
-    await sql`
-      CREATE TABLE IF NOT EXISTS blockchain (
-        id SERIAL PRIMARY KEY,
-        index INTEGER NOT NULL,
-        timestamp BIGINT NOT NULL,
-        antique_hash VARCHAR(255) NOT NULL,
-        owner VARCHAR(500) NOT NULL,
-        previous_hash VARCHAR(255) NOT NULL,
-        hash VARCHAR(255) NOT NULL UNIQUE,
-        FOREIGN KEY (antique_hash) REFERENCES antiques(hash)
-      )
-    `;
-    
-    // Create index for faster lookups
-    await sql`
-      CREATE INDEX IF NOT EXISTS idx_antique_hash ON blockchain(antique_hash)
-    `;
-
-    // Access codes table
-    await sql`
-      CREATE TABLE IF NOT EXISTS access_codes (
-        code VARCHAR(16) PRIMARY KEY,
-        created_at BIGINT NOT NULL,
-        expires_at BIGINT NOT NULL,
-        created_by VARCHAR(255) NOT NULL,
-        usage_count INTEGER NOT NULL DEFAULT 0,
-        last_used BIGINT,
-        deleted BOOLEAN NOT NULL DEFAULT FALSE
-      )
-    `;
-    await sql`CREATE INDEX IF NOT EXISTS idx_access_codes_expires ON access_codes(expires_at)`;
-    
-    console.log('Database initialized successfully');
+    console.log('Database connection ready.');
   } catch (error) {
     console.error('Error initializing database:', error);
-    // In a serverless environment, it's better to throw the error
-    // to understand what's failing during deployment or execution.
     throw new Error(`Database initialization failed: ${error.message}`);
   }
 }
