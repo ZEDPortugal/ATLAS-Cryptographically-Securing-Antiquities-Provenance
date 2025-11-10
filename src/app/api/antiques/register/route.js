@@ -16,23 +16,45 @@ export async function POST(req) {
     return NextResponse.json({ error: 'invalid json' }, { status: 400 });
   }
 
-  const { name, description, images, owner } = body;
-  console.log('📦 Request data:', { name, owner, hasImages: !!images });
+  const { name, description, images, owner, provenance } = body;
+  console.log('📦 Request data:', { 
+    name, 
+    owner, 
+    hasImages: !!images, 
+    imageKeys: images ? Object.keys(images) : [],
+    hasProvenance: !!provenance,
+    provenanceKeys: provenance ? Object.keys(provenance) : []
+  });
   
   if (!name) {
     console.error('❌ Missing name');
     return NextResponse.json({ error: 'missing name' }, { status: 400 });
   }
 
-  const art = new Antique({ name, description, images });
-  const missingViews = Object.entries(art.images)
-    .filter(([, value]) => !value.data)
-    .map(([key]) => key);
-    
-  if (missingViews.length) {
-    console.error('❌ Missing image views:', missingViews);
-    return NextResponse.json({ error: `Missing image(s): ${missingViews.join(', ')}` }, { status: 400 });
+  if (!images || typeof images !== 'object') {
+    console.error('❌ Invalid or missing images object');
+    return NextResponse.json({ error: 'invalid images format' }, { status: 400 });
   }
+
+  try {
+    const art = new Antique({ name, description, images });
+    const missingViews = Object.entries(art.images)
+      .filter(([, value]) => !value.data)
+      .map(([key]) => key);
+      
+    if (missingViews.length) {
+      console.error('❌ Missing image views:', missingViews);
+      return NextResponse.json({ error: `Missing image(s): ${missingViews.join(', ')}` }, { status: 400 });
+    }
+  } catch (antiqueError) {
+    console.error('❌ Failed to create Antique object:', antiqueError);
+    return NextResponse.json({ 
+      error: 'invalid antique data', 
+      detail: antiqueError.message 
+    }, { status: 400 });
+  }
+
+  const art = new Antique({ name, description, images });
   
   console.log('🔐 Computing multi-modal hash...');
   
@@ -61,6 +83,7 @@ export async function POST(req) {
       imagePhash: mm.image_phash,
       textSig: mm.text_sig,
       provenanceDigest: mm.provenance_digest,
+      provenance: provenance || null, // Save provenance data
     });
     
     console.log('✅ Antique saved to database');

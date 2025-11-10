@@ -174,6 +174,59 @@ export default function VerifyPage() {
                       <p className="mt-2 text-sm text-neutral-400 wrap-break-word">{result.antique.description || 'No description provided.'}</p>
                     </div>
 
+                    {/* Provenance Information */}
+                    {result.antique.provenance && (
+                      <div className="rounded-2xl border border-emerald-500/30 bg-emerald-500/5 p-6">
+                        <h3 className="text-lg font-semibold text-emerald-400 mb-4 uppercase tracking-wide">Provenance Records</h3>
+                        
+                        <div className="space-y-4">
+                          {result.antique.provenance.origin && (
+                            <div>
+                              <div className="text-xs uppercase tracking-wider text-neutral-500 mb-1">Origin / Source</div>
+                              <div className="text-sm text-neutral-200">{result.antique.provenance.origin}</div>
+                            </div>
+                          )}
+                          
+                          {result.antique.provenance.previousOwners && (
+                            <div>
+                              <div className="text-xs uppercase tracking-wider text-neutral-500 mb-1">Previous Owners</div>
+                              <div className="text-sm text-neutral-200 whitespace-pre-line">{result.antique.provenance.previousOwners}</div>
+                            </div>
+                          )}
+                          
+                          <div className="grid grid-cols-2 gap-4">
+                            {result.antique.provenance.dateAcquired && (
+                              <div>
+                                <div className="text-xs uppercase tracking-wider text-neutral-500 mb-1">Date Acquired</div>
+                                <div className="text-sm text-neutral-200">{new Date(result.antique.provenance.dateAcquired).toLocaleDateString()}</div>
+                              </div>
+                            )}
+                            
+                            {result.antique.provenance.materialAge && (
+                              <div>
+                                <div className="text-xs uppercase tracking-wider text-neutral-500 mb-1">Material / Age</div>
+                                <div className="text-sm text-neutral-200">{result.antique.provenance.materialAge}</div>
+                              </div>
+                            )}
+                          </div>
+                          
+                          {result.antique.provenance.condition && (
+                            <div>
+                              <div className="text-xs uppercase tracking-wider text-neutral-500 mb-1">Condition</div>
+                              <div className="text-sm text-neutral-200 capitalize">{result.antique.provenance.condition.replace('-', ' ')}</div>
+                            </div>
+                          )}
+                          
+                          {result.antique.provenance.authenticity && (
+                            <div>
+                              <div className="text-xs uppercase tracking-wider text-neutral-500 mb-1">Authentication Notes</div>
+                              <div className="text-sm text-neutral-200 whitespace-pre-line">{result.antique.provenance.authenticity}</div>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    )}
+
                     {result.antique.images ? (
                       <div className="grid gap-4 md:grid-cols-2">
                         {IMAGE_VIEWS.map(({ key, label }) => {

@@ -24,6 +24,14 @@ export default function RegisterPage() {
   const [message, setMessage] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
 
+  // Provenance fields
+  const [origin, setOrigin] = useState('')
+  const [previousOwners, setPreviousOwners] = useState('')
+  const [dateAcquired, setDateAcquired] = useState('')
+  const [materialAge, setMaterialAge] = useState('')
+  const [condition, setCondition] = useState('')
+  const [authenticity, setAuthenticity] = useState('')
+
   useEffect(() => {
     if (typeof window === 'undefined') {
       return
@@ -42,6 +50,13 @@ export default function RegisterPage() {
       if (parsed?.description) {
         setDescription(parsed.description)
       }
+      if (parsed?.origin) setOrigin(parsed.origin)
+      if (parsed?.previousOwners) setPreviousOwners(parsed.previousOwners)
+      if (parsed?.dateAcquired) setDateAcquired(parsed.dateAcquired)
+      if (parsed?.materialAge) setMaterialAge(parsed.materialAge)
+      if (parsed?.condition) setCondition(parsed.condition)
+      if (parsed?.authenticity) setAuthenticity(parsed.authenticity)
+      
       const cachedImages = getDraftImages(DRAFT_STORAGE_KEY)
       const sourceImages = parsed?.images && typeof parsed.images === 'object' ? parsed.images : cachedImages
       if (sourceImages && typeof sourceImages === 'object') {
@@ -145,6 +160,13 @@ export default function RegisterPage() {
       const draft = {
         name,
         description,
+        origin,
+        previousOwners,
+        dateAcquired,
+        materialAge,
+        condition,
+        authenticity,
+        images: sanitizedImages, // Store images in the draft object
         hasImages: Object.keys(sanitizedImages).length === IMAGE_VIEWS.length,
         ts: Date.now(),
       }
@@ -154,7 +176,7 @@ export default function RegisterPage() {
           window.sessionStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(draft))
         } catch (storageErr) {
           setIsSubmitting(false)
-          setMessage('Unable to cache the draft. Please try smaller images or remove one and retry.')
+          setMessage('Unable to cache the draft. Your images may be too large. Try using smaller files or compressing them first.')
           return
         }
       }
@@ -223,24 +245,37 @@ export default function RegisterPage() {
           </div>
 
         <form onSubmit={handleSubmit} className="space-y-12">
-          <div className="grid gap-10 md:grid-cols-[minmax(0,360px)_minmax(0,1fr)]">
-            <div className="flex flex-col gap-6">
+          <div className="grid gap-10 md:grid-cols-[minmax(0,400px)_minmax(0,1fr)]">
+            {/* Left side - All Images */}
+            <div className="flex flex-col gap-4">
+              {/* Front Image */}
               {renderUploadArea(IMAGE_VIEWS[0], {
-                containerClass: 'h-[260px] w-full',
+                containerClass: 'h-[240px] w-full',
                 previewClass: 'h-full w-full'
               })}
-              <div className="grid grid-cols-3 gap-4">
-                {IMAGE_VIEWS.slice(1).map((view) =>
-                  renderUploadArea(view, {
-                    containerClass: 'h-[140px]',
-                    previewClass: 'h-full w-full'
-                  })
-                )}
+              
+              {/* Back Image */}
+              {renderUploadArea(IMAGE_VIEWS[1], {
+                containerClass: 'h-[240px] w-full',
+                previewClass: 'h-full w-full'
+              })}
+              
+              {/* Left and Right Images */}
+              <div className="grid grid-cols-2 gap-4">
+                {renderUploadArea(IMAGE_VIEWS[2], {
+                  containerClass: 'h-[160px]',
+                  previewClass: 'h-full w-full'
+                })}
+                {renderUploadArea(IMAGE_VIEWS[3], {
+                  containerClass: 'h-[160px]',
+                  previewClass: 'h-full w-full'
+                })}
               </div>
             </div>
 
+            {/* Right side - All Inputs */}
             <div className="flex flex-col gap-6">
-              <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2">
                 <label className="text-sm uppercase tracking-wide">Name</label>
                 <input
                   className="w-full rounded-xl border border-neutral-700 bg-neutral-950/80 px-4 py-3 text-sm outline-none transition focus:border-emerald-400"
@@ -254,11 +289,87 @@ export default function RegisterPage() {
               <div className="flex flex-col gap-2">
                 <label className="text-sm uppercase tracking-wide">Description</label>
                 <textarea
-                  className="h-[300px] w-full rounded-xl border border-neutral-700 bg-neutral-950/80 px-4 py-3 text-sm outline-none transition focus:border-emerald-400"
+                  className="h-[200px] w-full rounded-xl border border-neutral-700 bg-neutral-950/80 px-4 py-3 text-sm outline-none transition focus:border-emerald-400"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  placeholder="Provide provenance, notable markings, materials, and any verification details."
+                  placeholder="Detailed description of the antique"
                 />
+              </div>
+
+              {/* Provenance Section */}
+              <div className="border-t border-neutral-700 pt-6">
+                <h3 className="text-lg font-semibold text-emerald-400 mb-4 uppercase tracking-wide">Provenance Information</h3>
+                
+                <div className="space-y-4">
+                  <div className="flex flex-col gap-2">
+                    <label className="text-xs uppercase tracking-wide text-neutral-400">Origin / Source</label>
+                    <input
+                      className="w-full rounded-xl border border-neutral-700 bg-neutral-950/80 px-4 py-2.5 text-sm outline-none transition focus:border-emerald-400"
+                      value={origin}
+                      onChange={(e) => setOrigin(e.target.value)}
+                      placeholder="e.g., Estate sale, Auction house, Private collection"
+                    />
+                  </div>
+
+                  <div className="flex flex-col gap-2">
+                    <label className="text-xs uppercase tracking-wide text-neutral-400">Previous Owners</label>
+                    <textarea
+                      className="h-20 w-full rounded-xl border border-neutral-700 bg-neutral-950/80 px-4 py-2.5 text-sm outline-none transition focus:border-emerald-400"
+                      value={previousOwners}
+                      onChange={(e) => setPreviousOwners(e.target.value)}
+                      placeholder="List known previous owners or provenance chain"
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="flex flex-col gap-2">
+                      <label className="text-xs uppercase tracking-wide text-neutral-400">Date Acquired</label>
+                      <input
+                        type="date"
+                        className="w-full rounded-xl border border-neutral-700 bg-neutral-950/80 px-4 py-2.5 text-sm outline-none transition focus:border-emerald-400"
+                        value={dateAcquired}
+                        onChange={(e) => setDateAcquired(e.target.value)}
+                      />
+                    </div>
+
+                    <div className="flex flex-col gap-2">
+                      <label className="text-xs uppercase tracking-wide text-neutral-400">Material / Age</label>
+                      <input
+                        className="w-full rounded-xl border border-neutral-700 bg-neutral-950/80 px-4 py-2.5 text-sm outline-none transition focus:border-emerald-400"
+                        value={materialAge}
+                        onChange={(e) => setMaterialAge(e.target.value)}
+                        placeholder="e.g., Bronze, 18th century"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col gap-2">
+                    <label className="text-xs uppercase tracking-wide text-neutral-400">Condition</label>
+                    <select
+                      className="w-full rounded-xl border border-neutral-700 bg-neutral-950/80 px-4 py-2.5 text-sm outline-none transition focus:border-emerald-400"
+                      value={condition}
+                      onChange={(e) => setCondition(e.target.value)}
+                    >
+                      <option value="">Select condition</option>
+                      <option value="excellent">Excellent</option>
+                      <option value="very-good">Very Good</option>
+                      <option value="good">Good</option>
+                      <option value="fair">Fair</option>
+                      <option value="poor">Poor</option>
+                      <option value="restored">Restored</option>
+                    </select>
+                  </div>
+
+                  <div className="flex flex-col gap-2">
+                    <label className="text-xs uppercase tracking-wide text-neutral-400">Authentication Notes</label>
+                    <textarea
+                      className="h-20 w-full rounded-xl border border-neutral-700 bg-neutral-950/80 px-4 py-2.5 text-sm outline-none transition focus:border-emerald-400"
+                      value={authenticity}
+                      onChange={(e) => setAuthenticity(e.target.value)}
+                      placeholder="Certificates, expert opinions, documentation references"
+                    />
+                  </div>
+                </div>
               </div>
             </div>
           </div>

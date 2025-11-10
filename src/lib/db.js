@@ -38,7 +38,8 @@ export async function initializeDatabase() {
         combined_hash VARCHAR(128),
         image_phash VARCHAR(128),
         text_sig TEXT,
-        provenance_digest VARCHAR(128)
+        provenance_digest VARCHAR(128),
+        provenance JSONB
       )
     `;
     console.log('✅ Antiques table ready');
@@ -125,11 +126,17 @@ export async function getAllUsers() {
 
 export async function saveAntique(hash, antique) {
   // Normalize hash to lowercase for consistency
+  if (!hash) {
+    throw new Error('hash is required for saveAntique');
+  }
+  if (!antique || !antique.images) {
+    throw new Error('antique object with images is required');
+  }
   const normalizedHash = hash.toLowerCase().trim();
   
   await sql`
-    INSERT INTO antiques (hash, name, description, images, created_at, combined_hash, image_phash, text_sig, provenance_digest)
-    VALUES (${normalizedHash}, ${antique.name}, ${antique.description || ''}, ${JSON.stringify(antique.images)}, ${antique.createdAt}, ${antique.combinedHash || null}, ${antique.imagePhash || null}, ${antique.textSig || null}, ${antique.provenanceDigest || null})
+    INSERT INTO antiques (hash, name, description, images, created_at, combined_hash, image_phash, text_sig, provenance_digest, provenance)
+    VALUES (${normalizedHash}, ${antique.name}, ${antique.description || ''}, ${JSON.stringify(antique.images)}, ${antique.createdAt}, ${antique.combinedHash || null}, ${antique.imagePhash || null}, ${antique.textSig || null}, ${antique.provenanceDigest || null}, ${antique.provenance ? JSON.stringify(antique.provenance) : null})
     ON CONFLICT (hash) DO UPDATE SET
       name = EXCLUDED.name,
       description = EXCLUDED.description,
@@ -138,7 +145,8 @@ export async function saveAntique(hash, antique) {
       combined_hash = COALESCE(EXCLUDED.combined_hash, antiques.combined_hash),
       image_phash = COALESCE(EXCLUDED.image_phash, antiques.image_phash),
       text_sig = COALESCE(EXCLUDED.text_sig, antiques.text_sig),
-      provenance_digest = COALESCE(EXCLUDED.provenance_digest, antiques.provenance_digest)
+      provenance_digest = COALESCE(EXCLUDED.provenance_digest, antiques.provenance_digest),
+      provenance = COALESCE(EXCLUDED.provenance, antiques.provenance)
   `;
   return { ...antique, hash: normalizedHash };
 }
@@ -163,6 +171,7 @@ export async function getAntique(hash) {
     imagePhash: row.image_phash,
     textSig: row.text_sig,
     provenanceDigest: row.provenance_digest,
+    provenance: row.provenance,
   };
 }
 
@@ -230,6 +239,9 @@ export async function loadChain() {
 
 export async function appendBlock({ antiqueHash, owner }) {
   // Normalize hash to lowercase for consistency
+  if (!antiqueHash) {
+    throw new Error('antiqueHash is required for appendBlock');
+  }
   const normalizedHash = antiqueHash.toLowerCase().trim();
   
   // Get the last block

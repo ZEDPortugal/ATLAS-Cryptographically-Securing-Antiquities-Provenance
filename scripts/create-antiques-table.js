@@ -14,7 +14,8 @@ async function main() {
         combined_hash VARCHAR(255),
         image_phash VARCHAR(255),
         text_sig VARCHAR(255),
-        provenance_digest VARCHAR(255)
+        provenance_digest VARCHAR(255),
+        provenance JSONB
       );
     `;
     console.log('Successfully created "antiques" table.');

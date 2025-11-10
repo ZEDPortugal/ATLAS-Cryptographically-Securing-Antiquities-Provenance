@@ -20,14 +20,18 @@ export default function RegisterQrPageClient() {
     }
 
     const anchor = document.createElement('a')
+    // Create a clean filename from the antique name
     const safeName = artifactName
       ? artifactName
-          .replace(/[^a-z0-9_-]+/gi, '-')
-          .replace(/-{2,}/g, '-')
-          .replace(/^-|-$/g, '')
-      : 'artifact'
+          .trim()
+          .replace(/[^a-z0-9_\s-]+/gi, '') // Remove special characters
+          .replace(/\s+/g, '-') // Replace spaces with hyphens
+          .replace(/-{2,}/g, '-') // Remove consecutive hyphens
+          .replace(/^-|-$/g, '') // Remove leading/trailing hyphens
+          .toLowerCase()
+      : 'antique'
     anchor.href = qrSrc
-    anchor.download = `${safeName || 'artifact'}-qr.png`
+    anchor.download = `${safeName || 'antique'}-qr.png`
     document.body.appendChild(anchor)
     anchor.click()
     document.body.removeChild(anchor)
@@ -84,7 +88,7 @@ export default function RegisterQrPageClient() {
         if (cancelled) {
           return
         }
-        const name = payload.artifact?.name || 'Registered Item'
+        const name = payload.antique?.name || 'Registered Item'
         setArtifactName(name)
         return QRCode.toDataURL(hash, {
           errorCorrectionLevel: 'H',
@@ -157,13 +161,13 @@ export default function RegisterQrPageClient() {
         <div className="grid gap-10 md:grid-cols-[minmax(0,320px)_minmax(0,1fr)]">
           <div className="flex flex-col items-center gap-6 rounded-3xl border-2 border-white/30 bg-neutral-950/60 p-10 text-center shadow-sm">
             {qrSrc ? (
-              <img src={qrSrc} alt="Artifact QR code" className="h-48 w-48 rounded-2xl border border-white/20 bg-neutral-900 p-4 shadow-sm" />
+              <img src={qrSrc} alt="Antique QR code" className="h-48 w-48 rounded-2xl border border-white/20 bg-neutral-900 p-4 shadow-sm" />
             ) : (
               <div className="flex h-48 w-48 items-center justify-center rounded-2xl border border-white/30 text-xs text-white/40">
                 QR unavailable
               </div>
             )}
-            <div className="text-sm font-medium uppercase tracking-wider text-white/70">{artifactName}</div>
+            <div className="text-base font-semibold uppercase tracking-wider text-emerald-400">{artifactName}</div>
           </div>
 
           <div className="flex flex-col gap-6">
