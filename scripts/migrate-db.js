@@ -15,6 +15,10 @@ async function initializeDatabase() {
     `;
     console.log('Table "users" created or already exists.');
 
+    await sql`DROP TABLE IF EXISTS blockchain;`;
+    await sql`DROP TABLE IF EXISTS antiques;`;
+    console.log('Dropped old tables.');
+
     await sql`
       CREATE TABLE IF NOT EXISTS antiques (
         hash VARCHAR(255) PRIMARY KEY,
