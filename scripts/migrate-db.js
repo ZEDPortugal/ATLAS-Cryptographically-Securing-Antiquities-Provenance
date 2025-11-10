@@ -16,7 +16,7 @@ async function initializeDatabase() {
     console.log('Table "users" created or already exists.');
 
     await sql`DROP TABLE IF EXISTS blockchain;`;
-    await sql`DROP TABLE IF EXISTS antiques;`;
+    await sql`DROP TABLE IF EXISTS artifacts;`;
     console.log('Dropped old tables.');
 
     await sql`
