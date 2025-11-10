@@ -1,3 +1,4 @@
+require('dotenv').config();
 const { sql } = require('@vercel/postgres');
 
 async function main() {
@@ -9,7 +10,11 @@ async function main() {
         name VARCHAR(255) NOT NULL,
         description TEXT,
         images JSONB,
-        created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+        created_at BIGINT,
+        combined_hash VARCHAR(255),
+        image_phash VARCHAR(255),
+        text_sig VARCHAR(255),
+        provenance_digest VARCHAR(255)
       );
     `;
     console.log('Successfully created "antiques" table.');

@@ -22,6 +22,7 @@ export async function POST(req) {
   const hash = mm.combined_hash;
 
   try {
+    await initializeDatabase();
     // Save antique FIRST (before blockchain entry due to foreign key constraint)
     await saveAntique(hash, {
       name: art.name,
