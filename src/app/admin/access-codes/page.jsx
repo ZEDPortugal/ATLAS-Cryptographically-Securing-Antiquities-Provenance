@@ -163,7 +163,10 @@ export default function AccessCodesPage() {
                   <option value={1}>1 hour</option>
                   <option value={6}>6 hours</option>
                   <option value={12}>12 hours</option>
-                  <option value={24}>24 hours</option>
+                  <option value={24}>24 hours (1 day)</option>
+                  <option value={48}>48 hours (2 days)</option>
+                  <option value={72}>72 hours (3 days)</option>
+                  <option value={168}>168 hours (7 days)</option>
                 </select>
               </div>
 
