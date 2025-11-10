@@ -116,7 +116,7 @@ export default function RegisterPreviewPage() {
     try {
       const payloadImages = buildImagePayload(images)
 
-      const res = await fetch('/api/artifacts/register', {
+      const res = await fetch('/api/antiques/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
