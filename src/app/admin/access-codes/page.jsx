@@ -159,7 +159,7 @@ export default function AccessCodesPage() {
                   Access Control
                 </h1>
                 <p className="mt-2 text-sm text-neutral-400">
-                  Manage verification access for buyers and collectors
+                  Manage verification access for Owner and collectors
                 </p>
               </div>
               <div className="flex items-center gap-2 text-xs text-neutral-400">
@@ -180,7 +180,7 @@ export default function AccessCodesPage() {
                   Generate Access Code
                 </h2>
                 <p className="mt-1 text-sm text-neutral-400">
-                  Create time-limited codes for buyer verification
+                  Create time-limited codes for Owners and Collectors verification
                 </p>
               </div>
             </div>
@@ -388,7 +388,7 @@ export default function AccessCodesPage() {
                     : "/verify-secure"}
                 </code>
               </li>
-              <li className="pl-2">Provide the access code to the buyer (via email, SMS, etc.)</li>
+              <li className="pl-2">Provide the access code to the Owners and Collectors (via email, SMS, etc.)</li>
               <li className="pl-2">Buyer enters the code to access the verification portal</li>
               <li className="pl-2">Codes expire automatically after the specified time</li>
             </ol>
